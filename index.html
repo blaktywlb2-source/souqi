@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0910">
+  <meta name="description" content="سوقي - سوق السودان للمنتجات والخدمات والمهارات">
+  <title>سوقي | سوق السودان</title>
+
+  <style>
+    :root {
+      --bg: #0b0910;
+      --card: #15111d;
+      --purple: #9861f5;
+      --gold: #d8b66a;
+      --text: #f7f2ff;
+      --muted: #aaa2b7;
+      --border: #30253f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Tahoma, Arial, sans-serif;
+      line-height: 1.7;
+    }
+
+    button, input, select { font: inherit; }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11,9,16,.94);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #352052, #171020);
+      border: 1px solid #72509c;
+      color: var(--gold);
+      font-size: 26px;
+    }
+
+    .brand-name {
+      font-size: 25px;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      color: #d1c8dc;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 18px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #9861f5, #7041bd);
+    }
+
+    .btn-primary:hover { filter: brightness(1.13); }
+
+    .btn-outline {
+      color: var(--gold);
+      border-color: #69502c;
+      background: #18130f;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 75px 0 55px;
+      background:
+        radial-gradient(ellipse at 10% 15%, #44266a44, transparent 45%),
+        radial-gradient(ellipse at 90% 80%, #a47a2820, transparent 40%);
+    }
+
+    .hero-content { max-width: 750px; }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 13px;
+      border: 1px solid #63458c;
+      border-radius: 30px;
+      color: #d3b5ff;
+      background: #251834;
+      font-size: 13px;
+    }
+
+    h1 {
+      margin: 22px 0 15px;
+      font-size: clamp(36px, 6vw, 62px);
+      line-height: 1.35;
+    }
+
+    h1 span {
+      color: var(--gold);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 600px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-top: 35px;
+      padding: 10px;
+      max-width: 800px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #15111ddd;
+    }
+
+    .search-box input,
+    .search-box select {
+      min-width: 0;
+      padding: 12px;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+
+    .search-box input { flex: 1; }
+    .search-box select { max-width: 155px; }
+    option { background: var(--card); }
+
+    .section { padding: 40px 0; }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    h2 { margin: 0; font-size: 25px; }
+    .subtitle { color: var(--muted); margin: 5px 0 0; }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .category {
+      padding: 20px 10px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .category:hover, .category.active {
+      border-color: var(--purple);
+      background: #21162f;
+      transform: translateY(-3px);
+    }
+
+    .category-icon { font-size: 28px; }
+    .category h3 { font-size: 14px; margin: 8px 0 0; }
+
+    .listing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .listing {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      transition: .2s;
+    }
+
+    .listing:hover {
+      border-color: #694a91;
+      transform: translateY(-3px);
+    }
+
+    .listing-image {
+      height: 165px;
+      display: grid;
+      place-items: center;
+      font-size: 58px;
+      background:
+        radial-gradient(circle at 50% 50%, #42265c, #1a1423 70%);
+    }
+
+    .listing-body { padding: 16px; }
+    .listing-type { color: #c5a2ff; font-size: 12px; }
+
+    .listing h3 {
+      margin: 7px 0;
+      font-size: 17px;
+    }
+
+    .listing-description {
+      color: var(--muted);
+      font-size: 13px;
+      min-height: 44px;
+    }
+
+    .listing-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .price { color: var(--gold); font-weight: bold; font-size: 16px; }
+
+    .listing-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .listing-footer .btn { flex: 1; padding: 9px 5px; font-size: 12px; }
+
+    .empty-state {
+      display: none;
+      padding: 30px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+    }
+
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .trust-item {
+      padding: 22px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, #17121f, #100e15);
+      border-radius: 16px;
+    }
+
+    .trust-item strong { display: block; color: var(--gold); }
+    .trust-item p { color: var(--muted); font-size: 13px; margin-bottom: 0; }
+
+    .cta {
+      margin: 30px 0 55px;
+      padding: 35px;
+      border: 1px solid #604182;
+      border-radius: 22px;
+      background: radial-gradient(ellipse at top right, #482866, #17111f 70%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .cta h2 { margin-bottom: 8px; }
+    .cta p { color: #c8bbd5; margin: 0; }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .footer-links { display: flex; flex-wrap: wrap; gap: 17px; }
+
+    .notice {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      color: #e3d5f5;
+      background: #21162f;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+      .categories { grid-template-columns: repeat(3, 1fr); }
+      .listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .trust { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .brand-name { font-size: 21px; }
+      .nav .btn { padding: 9px 10px; font-size: 12px; }
+      .hero { padding-top: 48px; }
+      .search-box { flex-wrap: wrap; }
+      .search-box input { flex-basis: 100%; }
+      .search-box select { flex: 1; max-width: none; }
+      .search-box button { flex: 1; }
+      .categories { gap: 9px; }
+      .category { padding: 14px 5px; }
+      .category h3 { font-size: 12px; }
+      .listing-grid { grid-template-columns: 1fr; }
+      .listing-image { height: 190px; }
+      .cta { padding: 23px; align-items: flex-start; flex-direction: column; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="#" aria-label="سوقي الصفحة الرئيسية">
+      <div class="brand-icon">س</div>
+      <div>
+        <div class="brand-name">سوقي</div>
+        <div class="brand-sub">SOUQI · SUDAN</div>
+      </div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#categories">الأقسام</a>
+      <a href="#listings">الإعلانات</a>
+      <a href="#about">عن سوقي</a>
+    </nav>
+
+    <button class="btn btn-primary" id="addTop">＋ أضف إعلانك</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="eyebrow">🇸🇩 سوق السودان في مكان واحد</span>
+        <h1>حاجتك عندنا،<br><span>وفرصتك تبدأ هنا.</span></h1>
+        <p>
+          اشترِ، بِع، واعرض مهاراتك وخدماتك.
+          سوقي يجمع البائعين وأصحاب المشاريع ومقدمي الخدمات في منصة واحدة.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#listings" class="btn btn-primary">اكتشف الإعلانات ←</a>
+          <button class="btn btn-outline" id="addHero">＋ اعرض منتجك أو خدمتك</button>
+        </div>
+      </div>
+
+      <form class="search-box" id="searchForm">
+        <input id="searchInput" type="search"
+          placeholder="بتفتش عن شنو؟ هاتف، تصميم، ملابس..."
+          aria-label="ابحث عن منتج أو خدمة">
+        <select id="cityFilter" aria-label="المدينة">
+          <option value="">كل المدن</option>
+          <option>الخرطوم</option>
+          <option>أم درمان</option>
+          <option>بحري</option>
+          <option>بورتسودان</option>
+          <option>مدني</option>
+          <option>كسلا</option>
+          <option>عطبرة</option>
+          <option>الأبيض</option>
+          <option>نيالا</option>
+          <option>أخرى</option>
+        </select>
+        <button class="btn btn-primary" type="submit">بحث</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="section container" id="categories">
+    <div class="section-heading">
+      <div>
+        <h2>تصفّح الأقسام</h2>
+        <p class="subtitle">اختار القسم المناسب ليك</p>
+      </div>
+    </div>
+
+    <div class="categories">
+      <button class="category active" data-category="all">
+        <div class="category-icon">✦</div><h3>الكل</h3>
+      </button>
+      <button class="category" data-category="products">
+        <div class="category-icon">📱</div><h3>إلكترونيات</h3>
+      </button>
+      <button class="category" data-category="products-clothes">
+        <div class="category-icon">👕</div><h3>ملابس</h3>
+      </button>
+      <button class="category" data-category="products-home">
+        <div class="category-icon">🛋️</div><h3>أثاث ومنزل</h3>
+      </button>
+      <button class="category" data-category="services">
+        <div class="category-icon">💻</div><h3>خدمات ومهارات</h3>
+      </button>
+      <button class="category" data-category="other">
+        <div class="category-icon">📦</div><h3>أخرى</h3>
+      </button>
+    </div>
+  </section>
+
+  <section class="section container" id="listings">
+    <div class="section-heading">
+      <div>
+        <h2>اكتشف سوقي</h2>
+        <p class="subtitle">نماذج توضيحية لشكل الإعلانات في الموقع</p>
+      </div>
+      <button class="btn btn-outline" id="clearFilters">عرض الكل</button>
+    </div>
+
+    <div class="listing-grid" id="listingGrid">
+      <article class="listing" data-category="products" data-city="الخرطوم"
+        data-search="هاتف سامسونج جالكسي جوال إلكترونيات">
+        <div class="listing-image">📱</div>
+        <div class="listing-body">
+          <span class="listing-type">إلكترونيات · مثال تجريبي</span>
+          <h3>هاتف ذكي</h3>
+          <p class="listing-description">مساحة لعرض مواصفات الهاتف وحالته وصوره.</p>
+          <div class="listing-meta">
+            <span>📍 الخرطوم</span><span class="price">السعر عند المعلن</span>
+          </div>
+          <div class="listing-footer">
+            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="listing" data-category="services" data-city="أم درمان"
+        data-search="تصميم جرافيك شعار هوية بصرية">
+        <div class="listing-image">🎨</div>
+        <div class="listing-body">
+          <span class="listing-type">خدمات · مثال تجريبي</span>
+          <h3>تصميم جرافيك</h3>
+          <p class="listing-description">اعرض خبرتك في تصميم الشعارات والهويات البصرية.</p>
+          <div class="listing-meta">
+            <span>📍 أم درمان</span><span class="price">حسب الخدمة</span>
+          </div>
+          <div class="listing-footer">
+            <button class="btn btn-outline demo-contact">تواصل مع مقدم الخدمة</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="listing" data-category="products-clothes" data-city="مدني"
+        data-search="ملابس أزياء متجر سوداني">
+        <div class="listing-image">👕</div>
+        <div class="listing-body">
+          <span class="listing-type">ملابس · مثال تجريبي</span>
+          <h3>ملابس وأزياء</h3>
+          <p class="listing-description">مكان لعرض الملابس الجديدة والمستعملة مع الصور.</p>
+          <div class="listing-meta">
+            <span>📍 مدني</span><span class="price">السعر عند المعلن</span>
+          </div>
+          <div class="listing-footer">
+            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="listing" data-category="products-home" data-city="بحري"
+        data-search="أثاث منزل كراسي طاولة">
+        <div class="listing-image">🛋️</div>
+        <div class="listing-body">
+          <span class="listing-type">أثاث · مثال تجريبي</span>
+          <h3>أثاث منزلي</h3>
+          <p class="listing-description">اعرض الأثاث والأغراض المنزلية للبيع.</p>
+          <div class="listing-meta">
+            <span>📍 بحري</span><span class="price">السعر عند المعلن</span>
+          </div>
+          <div class="listing-footer">
+            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="listing" data-category="services" data-city="بورتسودان"
+        data-search="ترجمة كتابة تدقيق لغات">
+        <div class="listing-image">📝</div>
+        <div class="listing-body">
+          <span class="listing-type">خدمات · مثال تجريبي</span>
+          <h3>ترجمة وتدقيق لغوي</h3>
+          <p class="listing-description">اعرض خبراتك اللغوية والخدمات التي تقدمها.</p>
+          <div class="listing-meta">
+            <span>📍 بورتسودان</span><span class="price">حسب الخدمة</span>
+          </div>
+          <div class="listing-footer">
+            <button class="btn btn-outline demo-contact">تواصل مع مقدم الخدمة</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="listing" data-category="other" data-city="كسلا"
+        data-search="كتب تعليم دراسة أدوات">
+        <div class="listing-image">📚</div>
+        <div class="listing-body">
+          <span class="listing-type">أخرى · مثال تجريبي</span>
+          <h3>كتب وأدوات تعليمية</h3>
+          <p class="listing-description">مكان للكتب والأدوات الدراسية وغيرها.</p>
+          <div class="listing-meta">
+            <span>📍 كسلا</span><span class="price">السعر عند المعلن</span>
+          </div>
+          <div class="listing-footer">
+            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      ما لقينا نتائج مطابقة. جرّب كلمات بحث مختلفة أو غيّر المدينة.
+    </div>
+
+    <div class="notice">
+      تنبيه: الإعلانات الظاهرة الآن أمثلة تجريبية للتصميم وليست عروض بيع حقيقية.
+    </div>
+  </section>
+
+  <section class="section container" id="about">
+    <div class="section-heading">
+      <div>
+        <h2>سوقي أقرب ليك</h2>
+        <p class="subtitle">مساحة للجميع لعرض المنتجات والمهارات.</p>
+      </div>
+    </div>
+
+    <div class="trust">
+      <div class="trust-item">
+        <strong>🛍️ بيع وشراء</strong>
+        <p>اعرض المنتجات مع الصور والأسعار والمدن.</p>
+      </div>
+      <div class="trust-item">
+        <strong>💡 مهارات وخدمات</strong>
+        <p>خلّي الناس تتعرّف على خبراتك وشغلك.</p>
+      </div>
+      <div class="trust-item">
+        <strong>⭐ تقييمات مستقبلية</strong>
+        <p>نخطط لإضافة تقييمات حقيقية للحسابات بعد تسجيل الدخول.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <div>
+        <h2>عندك حاجة تعرضها؟</h2>
+        <p>جهّز إعلانك، والخطوة الجاية حنربط الموقع بحسابات المستخدمين.</p>
+      </div>
+      <button class="btn btn-primary" id="addBottom">ابدأ بإعلانك ←</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© <span id="year"></span> سوقي SOUQI · صنع بحب للسودان 🇸🇩</div>
+    <div class="footer-links">
+      <a href="#categories">الأقسام</a>
+      <a href="#listings">الإعلانات</a>
+      <a href="#" id="whatsappLink">تواصل مع الإدارة</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const cards = [...document.querySelectorAll(".listing")];
+  const searchInput = document.getElementById("searchInput");
+  const cityFilter = document.getElementById("cityFilter");
+  const emptyState = document.getElementById("emptyState");
+  let activeCategory = "all";
+
+  function filterListings() {
+    const term = searchInput.value.trim().toLowerCase();
+    const city = cityFilter.value;
+    let visible = 0;
+
+    cards.forEach(card => {
+      const matchesTerm =
+        (card.dataset.search + " " + card.innerText).toLowerCase().includes(term);
+      const matchesCity = !city || card.dataset.city === city;
+      const category = card.dataset.category;
+
+      let matchesCategory = activeCategory === "all";
+
+      if (activeCategory === "products") {
+        matchesCategory = category === "products";
+      } else if (activeCategory === "products-clothes" ||
+                 activeCategory === "products-home") {
+        matchesCategory = category === activeCategory;
+      } else if (activeCategory === "services") {
+        matchesCategory = category === "services";
+      } else if (activeCategory === "other") {
+        matchesCategory = category === "other";
+      }
+
+      const show = matchesTerm && matchesCity && matchesCategory;
+      card.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+
+    emptyState.style.display = visible ? "none" : "block";
+  }
+
+  document.querySelectorAll(".category").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".category").forEach(item =>
+        item.classList.remove("active")
+      );
+      button.classList.add("active");
+      activeCategory = button.dataset.category;
+      filterListings();
+      document.getElementById("listings").scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  document.getElementById("searchForm").addEventListener("submit", event => {
+    event.preventDefault();
+    filterListings();
+    document.getElementById("listings").scrollIntoView({ behavior: "smooth" });
+  });
+
+  searchInput.addEventListener("input", filterListings);
+  cityFilter.addEventListener("change", filterListings);
+
+  document.getElementById("clearFilters").addEventListener("click", () => {
+    searchInput.value = "";
+    cityFilter.value = "";
+    activeCategory = "all";
+    document.querySelectorAll(".category").forEach(item =>
+      item.classList.toggle("active", item.dataset.category === "all")
+    );
+    filterListings();
+  });
+
+  function addListingNotice() {
+    alert("إضافة الإعلانات الحقيقية ستتوفر بعد ربط تسجيل الدخول وقاعدة البيانات في الخطوة التالية.");
+  }
+
+  ["addTop", "addHero", "addBottom"].forEach(id => {
+    document.getElementById(id).addEventListener("click", addListingNotice);
+  });
+
+  document.querySelectorAll(".demo-contact").forEach(button => {
+    button.addEventListener("click", () => {
+      alert("هذا إعلان تجريبي، ولا يوجد معلن حقيقي للتواصل معه حتى الآن.");
+    });
+  });
+
+  // يُضاف رابط واتساب بعد تأكيد الرقم بصيغته الدولية.
+  document.getElementById("whatsappLink").addEventListener("click", event => {
+    event.preventDefault();
+    alert("سيتم تفعيل واتساب الإدارة بعد تأكيد مفتاح الدولة للرقم.");
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
