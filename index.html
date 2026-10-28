@@ -1,949 +1,461 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b0910">
-  <meta name="description" content="سوقي - سوق السودان للمنتجات والخدمات والمهارات">
-  <title>سوقي | سوق السودان</title>
-
-  <style>
-    :root {
-      --bg: #0b0910;
-      --card: #15111d;
-      --purple: #9861f5;
-      --gold: #d8b66a;
-      --text: #f7f2ff;
-      --muted: #aaa2b7;
-      --border: #30253f;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Tahoma, Arial, sans-serif;
-      line-height: 1.7;
-    }
-
-    button, input, select { font: inherit; }
-
-    button, a { -webkit-tap-highlight-color: transparent; }
-
-    a { color: inherit; text-decoration: none; }
-
-    .container {
-      width: min(1120px, 92%);
-      margin: auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(11,9,16,.94);
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-    }
-
-    .brand-icon {
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      border-radius: 15px;
-      background: linear-gradient(135deg, #352052, #171020);
-      border: 1px solid #72509c;
-      color: var(--gold);
-      font-size: 26px;
-    }
-
-    .brand-name {
-      font-size: 25px;
-      font-weight: 900;
-      color: var(--gold);
-      line-height: 1.2;
-    }
-
-    .brand-sub {
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 2px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      color: #d1c8dc;
-      font-size: 14px;
-    }
-
-    .nav-links a:hover { color: var(--gold); }
-
-    .btn {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 7px;
-      padding: 11px 18px;
-      border: 1px solid transparent;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: .2s;
-    }
-
-    .btn-primary {
-      color: white;
-      background: linear-gradient(135deg, #9861f5, #7041bd);
-    }
-
-    .btn-primary:hover { filter: brightness(1.13); }
-
-    .btn-outline {
-      color: var(--gold);
-      border-color: #69502c;
-      background: #18130f;
-    }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 75px 0 55px;
-      background:
-        radial-gradient(ellipse at 10% 15%, #44266a44, transparent 45%),
-        radial-gradient(ellipse at 90% 80%, #a47a2820, transparent 40%);
-    }
-
-    .hero-content { max-width: 750px; }
-
-    .eyebrow {
-      display: inline-block;
-      padding: 6px 13px;
-      border: 1px solid #63458c;
-      border-radius: 30px;
-      color: #d3b5ff;
-      background: #251834;
-      font-size: 13px;
-    }
-
-    h1 {
-      margin: 22px 0 15px;
-      font-size: clamp(36px, 6vw, 62px);
-      line-height: 1.35;
-    }
-
-    h1 span {
-      color: var(--gold);
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 17px;
-      max-width: 600px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 26px;
-    }
-
-    .search-box {
-      display: flex;
-      gap: 10px;
-      margin-top: 35px;
-      padding: 10px;
-      max-width: 800px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: #15111ddd;
-    }
-
-    .search-box input,
-    .search-box select {
-      min-width: 0;
-      padding: 12px;
-      color: var(--text);
-      background: transparent;
-      border: none;
-      outline: none;
-    }
-
-    .search-box input { flex: 1; }
-    .search-box select { max-width: 155px; }
-    option { background: var(--card); }
-
-    .section { padding: 40px 0; }
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 22px;
-    }
-
-    h2 { margin: 0; font-size: 25px; }
-    .subtitle { color: var(--muted); margin: 5px 0 0; }
-
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 13px;
-    }
-
-    .category {
-      padding: 20px 10px;
-      text-align: center;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--card);
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .category:hover, .category.active {
-      border-color: var(--purple);
-      background: #21162f;
-      transform: translateY(-3px);
-    }
-
-    .category-icon { font-size: 28px; }
-    .category h3 { font-size: 14px; margin: 8px 0 0; }
-
-    .listing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .listing {
-      overflow: hidden;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      transition: .2s;
-    }
-
-    .listing:hover {
-      border-color: #694a91;
-      transform: translateY(-3px);
-    }
-
-    .listing-image {
-      height: 165px;
-      display: grid;
-      place-items: center;
-      font-size: 58px;
-      background:
-        radial-gradient(circle at 50% 50%, #42265c, #1a1423 70%);
-    }
-
-    .listing-body { padding: 16px; }
-    .listing-type { color: #c5a2ff; font-size: 12px; }
-
-    .listing h3 {
-      margin: 7px 0;
-      font-size: 17px;
-    }
-
-    .listing-description {
-      color: var(--muted);
-      font-size: 13px;
-      min-height: 44px;
-    }
-
-    .listing-meta {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 13px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .price { color: var(--gold); font-weight: bold; font-size: 16px; }
-
-    .listing-footer {
-      display: flex;
-      gap: 8px;
-      margin-top: 15px;
-    }
-
-    .listing-footer .btn { flex: 1; padding: 9px 5px; font-size: 12px; }
-
-    .empty-state {
-      display: none;
-      padding: 30px;
-      color: var(--muted);
-      text-align: center;
-      border: 1px dashed var(--border);
-      border-radius: 16px;
-    }
-
-    .trust {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin: 30px 0;
-    }
-
-    .trust-item {
-      padding: 22px;
-      border: 1px solid var(--border);
-      background: linear-gradient(135deg, #17121f, #100e15);
-      border-radius: 16px;
-    }
-
-    .trust-item strong { display: block; color: var(--gold); }
-    .trust-item p { color: var(--muted); font-size: 13px; margin-bottom: 0; }
-
-    .cta {
-      margin: 30px 0 55px;
-      padding: 35px;
-      border: 1px solid #604182;
-      border-radius: 22px;
-      background: radial-gradient(ellipse at top right, #482866, #17111f 70%);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .cta h2 { margin-bottom: 8px; }
-    .cta p { color: #c8bbd5; margin: 0; }
-
-
-    <p style="color:#aaa2b7">أهلاً بيك في سوقي 🇸🇩</p>
-
-    <div id="authTabs" style="display:flex;gap:8px;margin:18px 0">
-      <button id="loginTab" type="button" class="btn btn-primary" style="flex:1">دخول</button>
-      <button id="signupTab" type="button" class="btn btn-outline" style="flex:1">حساب جديد</button>
-    </div>
-
-    <form id="authForm">
-      <div id="nameWrap" style="display:none">
-        <label for="authName">الاسم</label>
-        <input id="authName" maxlength="70" placeholder="اكتب اسمك" style="width:100%;padding:12px;margin:8px 0 14px;background:#0b0910;color:white;border:1px solid #30253f;border-radius:10px">
-      </div>
-
-      <label for="authEmail">البريد الإلكتروني</label>
-      <input id="authEmail" type="email" required autocomplete="email" placeholder="name@example.com" style="width:100%;padding:12px;margin:8px 0 14px;background:#0b0910;color:white;border:1px solid #30253f;border-radius:10px">
-
-      <div id="passwordWrap">
-        <label for="authPassword">كلمة المرور</label>
-        <input id="authPassword" type="password" minlength="6" autocomplete="current-password" placeholder="6 أحرف على الأقل" style="width:100%;padding:12px;margin:8px 0 14px;background:#0b0910;color:white;border:1px solid #30253f;border-radius:10px">
-      </div>
-
-      <button id="submitAuth" type="submit" class="btn btn-primary" style="width:100%;margin-top:12px">تسجيل الدخول</button>
-    </form>
-
-    <button id="forgotPassword" type="button" style="display:block;background:none;border:0;color:#d3b5ff;cursor:pointer;margin:15px auto">
-      هل نسيت كلمة السر؟
-    </button>
-
-    <div style="text-align:center;color:#aaa2b7;margin:12px">أو</div>
-
-    <button id="googleLogin" type="button" class="btn btn-outline" style="width:100%">
-      المتابعة باستخدام Google
-    </button>
-
-    <div id="authMessage" role="status" aria-live="polite" style="margin-top:15px;overflow-wrap:anywhere"></div>
-    <button id="logoutBtn" type="button" class="btn btn-outline" style="display:none;width:100%;margin-top:12px">تسجيل الخروج</button>
-  </div>
-</div>
-    footer {
-      padding: 28px 0;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .footer-links { display: flex; flex-wrap: wrap; gap: 17px; }
-
-    .notice {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      color: #e3d5f5;
-      background: #21162f;
-      font-size: 13px;
-    }
-
-    @media (max-width: 800px) {
-      .nav-links { display: none; }
-      .categories { grid-template-columns: repeat(3, 1fr); }
-      .listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .trust { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 520px) {
-      .brand-name { font-size: 21px; }
-      .nav .btn { padding: 9px 10px; font-size: 12px; }
-      .hero { padding-top: 48px; }
-      .search-box { flex-wrap: wrap; }
-      .search-box input { flex-basis: 100%; }
-      .search-box select { flex: 1; max-width: none; }
-      .search-box button { flex: 1; }
-      .categories { gap: 9px; }
-      .category { padding: 14px 5px; }
-      .category h3 { font-size: 12px; }
-      .listing-grid { grid-template-columns: 1fr; }
-      .listing-image { height: 190px; }
-      .cta { padding: 23px; align-items: flex-start; flex-direction: column; }
-      .section-heading { align-items: flex-start; flex-direction: column; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0910">
+<meta name="description" content="سوقي - سوق السودان للمنتجات والخدمات والمهارات">
+<title>سوقي | سوق السودان</title>
+
+<style>
+:root{--bg:#0b0910;--card:#15111d;--purple:#9861f5;--gold:#d8b66a;--text:#f7f2ff;--muted:#aaa2b7;--border:#30253f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.7}
+button,input,select{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.container{width:min(1120px,92%);margin:auto}
+header{position:sticky;top:0;z-index:10;background:#0b0910f5;border-bottom:1px solid var(--border)}
+.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:#281a39;border:1px solid #72509c;color:var(--gold);font-size:26px}
+.brand-name{font-size:24px;font-weight:bold;color:var(--gold)}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:2px}
+.nav-links{display:flex;gap:18px;font-size:14px;color:#d1c8dc}
+.nav-links a:hover{color:var(--gold)}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:6px;padding:10px 15px;border:1px solid transparent;border-radius:11px;font-weight:bold;transition:.2s;cursor:pointer}
+.btn-primary{color:white;background:linear-gradient(135deg,#9861f5,#7041bd)}
+.btn-outline{color:var(--gold);border-color:#69502c;background:#18130f}
+.btn:disabled{opacity:.55;cursor:wait}
+.hero{padding:65px 0 45px;background:radial-gradient(ellipse at 10% 15%,#44266a44,transparent 45%),radial-gradient(ellipse at 90% 80%,#a47a2820,transparent 40%)}
+.hero-content{max-width:750px}
+.eyebrow{display:inline-block;padding:5px 12px;border:1px solid #63458c;border-radius:30px;color:#d3b5ff;background:#251834;font-size:13px}
+h1{margin:20px 0 12px;font-size:clamp(35px,6vw,60px);line-height:1.35}
+h1 span{color:var(--gold)}
+.hero p,.subtitle{color:var(--muted)}
+.hero p{font-size:16px;max-width:600px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.search-box{display:flex;gap:10px;margin-top:30px;padding:10px;max-width:800px;border:1px solid var(--border);border-radius:16px;background:#15111ddd}
+.search-box input,.search-box select{min-width:0;padding:11px;color:var(--text);background:transparent;border:0;outline:none}
+.search-box input{flex:1}
+.search-box select{max-width:160px}
+option{background:var(--card)}
+.section{padding:35px 0}
+.section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+h2{margin:0;font-size:24px}
+.subtitle{margin:5px 0 0}
+.categories{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.category{padding:17px 8px;text-align:center;color:var(--text);border:1px solid var(--border);border-radius:15px;background:var(--card);transition:.2s}
+.category:hover,.category.active{border-color:var(--purple);background:#21162f}
+.category-icon{font-size:27px}
+.category h3{font-size:13px;margin:7px 0 0}
+.listing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.listing{overflow:hidden;background:var(--card);border:1px solid var(--border);border-radius:17px}
+.listing-image{height:150px;display:grid;place-items:center;font-size:55px;background:radial-gradient(circle,#42265c,#1a1423 70%)}
+.listing-body{padding:15px}
+.listing-type{color:#c5a2ff;font-size:12px}
+.listing h3{margin:6px 0;font-size:17px}
+.listing-description{color:var(--muted);font-size:13px;min-height:42px}
+.listing-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:12px;color:var(--muted);font-size:12px}
+.price{color:var(--gold);font-weight:bold}
+.listing-footer{display:flex;gap:8px;margin-top:14px}
+.listing-footer .btn{flex:1;padding:8px 5px;font-size:12px}
+.empty-state{display:none;padding:25px;color:var(--muted);text-align:center;border:1px dashed var(--border);border-radius:15px}
+.notice{margin-top:15px;padding:12px;border-radius:10px;color:#e3d5f5;background:#21162f;font-size:13px}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:25px 0}
+.trust-item{padding:20px;border:1px solid var(--border);background:#15111d;border-radius:15px}
+.trust-item strong{display:block;color:var(--gold)}
+.trust-item p{color:var(--muted);font-size:13px;margin-bottom:0}
+.cta{margin:25px 0 50px;padding:30px;border:1px solid #604182;border-radius:20px;background:radial-gradient(ellipse at top right,#482866,#17111f 70%);display:flex;justify-content:space-between;align-items:center;gap:18px}
+.cta p{color:#c8bbd5;margin:5px 0}
+footer{padding:25px 0;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px}
+.footer-links{display:flex;flex-wrap:wrap;gap:16px}
+#authModal{display:none;position:fixed;inset:0;z-index:1000;background:#000d;overflow:auto;padding:18px}
+.auth-panel{max-width:440px;margin:4vh auto;background:#15111d;border:1px solid #604182;border-radius:20px;padding:22px;color:var(--text)}
+.auth-heading{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.auth-panel label{display:block;font-size:14px}
+.auth-input{width:100%;padding:12px;margin:7px 0 14px;background:#0b0910;color:white;border:1px solid var(--border);border-radius:10px;outline:none}
+.auth-input:focus{border-color:var(--purple)}
+.auth-message{margin-top:14px;font-size:14px;overflow-wrap:anywhere}
+.auth-message.error{color:#ffabb8}
+.auth-message.success{color:#9be7b0}
+.auth-panel button{touch-action:manipulation}
+@media(max-width:800px){.nav-links{display:none}.categories{grid-template-columns:repeat(3,1fr)}.listing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.trust{grid-template-columns:1fr}}
+@media(max-width:520px){.brand-name{font-size:21px}.nav .btn{padding:8px;font-size:11px}.hero{padding-top:42px}.search-box{flex-wrap:wrap}.search-box input{flex-basis:100%}.search-box select{flex:1;max-width:none}.search-box button{flex:1}.listing-grid{grid-template-columns:1fr}.listing-image{height:175px}.cta{align-items:flex-start;flex-direction:column}.section-heading{align-items:flex-start;flex-direction:column}}
+</style>
 </head>
 
 <body>
 <header>
-  <div class="container nav">
-    <a class="brand" href="#" aria-label="سوقي الصفحة الرئيسية">
-      <div class="brand-icon">س</div>
-      <div>
-        <div class="brand-name">سوقي</div>
-        <div class="brand-sub">SOUQI · SUDAN</div>
-      </div>
-    </a>
-
-    <nav class="nav-links">
-      <a href="#categories">الأقسام</a>
-      <a href="#listings">الإعلانات</a>
-      <a href="#about">عن سوقي</a>
-    </nav>
-
-<div style="display:flex;gap:8px;flex-wrap:wrap">
-  <button class="btn btn-outline" id="loginTop">دخول / حساب جديد</button>
-  <button class="btn btn-primary" id="addTop">＋ أضف إعلانك</button>
+<div class="container nav">
+<a class="brand" href="#" aria-label="سوقي">
+<div class="brand-icon">س</div>
+<div><div class="brand-name">سوقي</div><div class="brand-sub">SOUQI · SUDAN</div></div>
+</a>
+<nav class="nav-links">
+<a href="#categories">الأقسام</a>
+<a href="#listings">الإعلانات</a>
+<a href="#about">عن سوقي</a>
+</nav>
+<div style="display:flex;gap:7px;flex-wrap:wrap">
+<button class="btn btn-outline" id="loginTop" type="button">دخول / حساب جديد</button>
+<button class="btn btn-primary" id="addTop" type="button">＋ أضف إعلانك</button>
 </div>
-  </div>
+</div>
 </header>
 
 <main>
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <span class="eyebrow">🇸🇩 سوق السودان في مكان واحد</span>
-        <h1>حاجتك عندنا،<br><span>وفرصتك تبدأ هنا.</span></h1>
-        <p>
-          اشترِ، بِع، واعرض مهاراتك وخدماتك.
-          سوقي يجمع البائعين وأصحاب المشاريع ومقدمي الخدمات في منصة واحدة.
-        </p>
+<section class="hero">
+<div class="container">
+<div class="hero-content">
+<span class="eyebrow">🇸🇩 سوق السودان في مكان واحد</span>
+<h1>حاجتك عندنا،<br><span>وفرصتك تبدأ هنا.</span></h1>
+<p>اشترِ، بِع، واعرض مهاراتك وخدماتك. سوقي يجمع البائعين وأصحاب المشاريع ومقدمي الخدمات في منصة واحدة.</p>
+<div class="hero-actions">
+<a href="#listings" class="btn btn-primary">اكتشف الإعلانات ←</a>
+<button class="btn btn-outline" id="addHero" type="button">＋ اعرض منتجك أو خدمتك</button>
+</div>
+</div>
+<form class="search-box" id="searchForm">
+<input id="searchInput" type="search" placeholder="بتفتش عن شنو؟ هاتف، تصميم، ملابس..." aria-label="ابحث">
+<select id="cityFilter" aria-label="المدينة">
+<option value="">كل المدن</option>
+<option>الخرطوم</option><option>أم درمان</option><option>بحري</option>
+<option>بورتسودان</option><option>مدني</option><option>كسلا</option>
+<option>عطبرة</option><option>الأبيض</option><option>نيالا</option><option>أخرى</option>
+</select>
+<button class="btn btn-primary" type="submit">بحث</button>
+</form>
+</div>
+</section>
 
-        <div class="hero-actions">
-          <a href="#listings" class="btn btn-primary">اكتشف الإعلانات ←</a>
-          <button class="btn btn-outline" id="addHero">＋ اعرض منتجك أو خدمتك</button>
-        </div>
-      </div>
+<section class="section container" id="categories">
+<div class="section-heading"><div><h2>تصفّح الأقسام</h2><p class="subtitle">اختار القسم المناسب ليك</p></div></div>
+<div class="categories">
+<button class="category active" data-category="all" type="button"><div class="category-icon">✦</div><h3>الكل</h3></button>
+<button class="category" data-category="products" type="button"><div class="category-icon">📱</div><h3>إلكترونيات</h3></button>
+<button class="category" data-category="products-clothes" type="button"><div class="category-icon">👕</div><h3>ملابس</h3></button>
+<button class="category" data-category="products-home" type="button"><div class="category-icon">🛋️</div><h3>أثاث ومنزل</h3></button>
+<button class="category" data-category="services" type="button"><div class="category-icon">💻</div><h3>خدمات ومهارات</h3></button>
+<button class="category" data-category="other" type="button"><div class="category-icon">📦</div><h3>أخرى</h3></button>
+</div>
+</section>
 
-      <form class="search-box" id="searchForm">
-        <input id="searchInput" type="search"
-          placeholder="بتفتش عن شنو؟ هاتف، تصميم، ملابس..."
-          aria-label="ابحث عن منتج أو خدمة">
-        <select id="cityFilter" aria-label="المدينة">
-          <option value="">كل المدن</option>
-          <option>الخرطوم</option>
-          <option>أم درمان</option>
-          <option>بحري</option>
-          <option>بورتسودان</option>
-          <option>مدني</option>
-          <option>كسلا</option>
-          <option>عطبرة</option>
-          <option>الأبيض</option>
-          <option>نيالا</option>
-          <option>أخرى</option>
-        </select>
-        <button class="btn btn-primary" type="submit">بحث</button>
-      </form>
-    </div>
-  </section>
+<section class="section container" id="listings">
+<div class="section-heading">
+<div><h2>اكتشف سوقي</h2><p class="subtitle">نماذج توضيحية للإعلانات</p></div>
+<button class="btn btn-outline" id="clearFilters" type="button">عرض الكل</button>
+</div>
+<div class="listing-grid" id="listingGrid">
+<article class="listing" data-category="products" data-city="الخرطوم" data-search="هاتف سامسونج جالكسي جوال إلكترونيات">
+<div class="listing-image">📱</div><div class="listing-body">
+<span class="listing-type">إلكترونيات · مثال تجريبي</span><h3>هاتف ذكي</h3>
+<p class="listing-description">مساحة لعرض مواصفات الهاتف وحالته وصوره.</p>
+<div class="listing-meta"><span>📍 الخرطوم</span><span class="price">السعر عند المعلن</span></div>
+<div class="listing-footer"><button class="btn btn-outline demo-contact" type="button">تواصل مع المعلن</button></div>
+</div></article>
 
-  <section class="section container" id="categories">
-    <div class="section-heading">
-      <div>
-        <h2>تصفّح الأقسام</h2>
-        <p class="subtitle">اختار القسم المناسب ليك</p>
-      </div>
-    </div>
+<article class="listing" data-category="services" data-city="أم درمان" data-search="تصميم جرافيك شعار هوية بصرية">
+<div class="listing-image">🎨</div><div class="listing-body">
+<span class="listing-type">خدمات · مثال تجريبي</span><h3>تصميم جرافيك</h3>
+<p class="listing-description">اعرض خبرتك في تصميم الشعارات والهويات البصرية.</p>
+<div class="listing-meta"><span>📍 أم درمان</span><span class="price">حسب الخدمة</span></div>
+<div class="listing-footer"><button class="btn btn-outline demo-contact" type="button">تواصل مع مقدم الخدمة</button></div>
+</div></article>
 
-    <div class="categories">
-      <button class="category active" data-category="all">
-        <div class="category-icon">✦</div><h3>الكل</h3>
-      </button>
-      <button class="category" data-category="products">
-        <div class="category-icon">📱</div><h3>إلكترونيات</h3>
-      </button>
-      <button class="category" data-category="products-clothes">
-        <div class="category-icon">👕</div><h3>ملابس</h3>
-      </button>
-      <button class="category" data-category="products-home">
-        <div class="category-icon">🛋️</div><h3>أثاث ومنزل</h3>
-      </button>
-      <button class="category" data-category="services">
-        <div class="category-icon">💻</div><h3>خدمات ومهارات</h3>
-      </button>
-      <button class="category" data-category="other">
-        <div class="category-icon">📦</div><h3>أخرى</h3>
-      </button>
-    </div>
-  </section>
+<article class="listing" data-category="products-clothes" data-city="مدني" data-search="ملابس أزياء متجر سوداني">
+<div class="listing-image">👕</div><div class="listing-body">
+<span class="listing-type">ملابس · مثال تجريبي</span><h3>ملابس وأزياء</h3>
+<p class="listing-description">مكان لعرض الملابس الجديدة والمستعملة مع الصور.</p>
+<div class="listing-meta"><span>📍 مدني</span><span class="price">السعر عند المعلن</span></div>
+<div class="listing-footer"><button class="btn btn-outline demo-contact" type="button">تواصل مع المعلن</button></div>
+</div></article>
 
-  <section class="section container" id="listings">
-    <div class="section-heading">
-      <div>
-        <h2>اكتشف سوقي</h2>
-        <p class="subtitle">نماذج توضيحية لشكل الإعلانات في الموقع</p>
-      </div>
-      <button class="btn btn-outline" id="clearFilters">عرض الكل</button>
-    </div>
+<article class="listing" data-category="products-home" data-city="بحري" data-search="أثاث منزل كراسي طاولة">
+<div class="listing-image">🛋️</div><div class="listing-body">
+<span class="listing-type">أثاث · مثال تجريبي</span><h3>أثاث منزلي</h3>
+<p class="listing-description">اعرض الأثاث والأغراض المنزلية للبيع.</p>
+<div class="listing-meta"><span>📍 بحري</span><span class="price">السعر عند المعلن</span></div>
+<div class="listing-footer"><button class="btn btn-outline demo-contact" type="button">تواصل مع المعلن</button></div>
+</div></article>
 
-    <div class="listing-grid" id="listingGrid">
-      <article class="listing" data-category="products" data-city="الخرطوم"
-        data-search="هاتف سامسونج جالكسي جوال إلكترونيات">
-        <div class="listing-image">📱</div>
-        <div class="listing-body">
-          <span class="listing-type">إلكترونيات · مثال تجريبي</span>
-          <h3>هاتف ذكي</h3>
-          <p class="listing-description">مساحة لعرض مواصفات الهاتف وحالته وصوره.</p>
-          <div class="listing-meta">
-            <span>📍 الخرطوم</span><span class="price">السعر عند المعلن</span>
-          </div>
-          <div class="listing-footer">
-            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
-          </div>
-        </div>
-      </article>
+<article class="listing" data-category="services" data-city="بورتسودان" data-search="ترجمة كتابة تدقيق لغات">
+<div class="listing-image">📝</div><div class="listing-body">
+<span class="listing-type">خدمات · مثال تجريبي</span><h3>ترجمة وتدقيق لغوي</h3>
+<p class="listing-description">اعرض خبراتك اللغوية والخدمات التي تقدمها.</p>
+<div class="listing-meta"><span>📍 بورتسودان</span><span class="price">حسب الخدمة</span></div>
+<div class="listing-footer"><button class="btn btn-outline demo-contact" type="button">تواصل مع مقدم الخدمة</button></div>
+</div></article>
 
-      <article class="listing" data-category="services" data-city="أم درمان"
-        data-search="تصميم جرافيك شعار هوية بصرية">
-        <div class="listing-image">🎨</div>
-        <div class="listing-body">
-          <span class="listing-type">خدمات · مثال تجريبي</span>
-          <h3>تصميم جرافيك</h3>
-          <p class="listing-description">اعرض خبرتك في تصميم الشعارات والهويات البصرية.</p>
-          <div class="listing-meta">
-            <span>📍 أم درمان</span><span class="price">حسب الخدمة</span>
-          </div>
-          <div class="listing-footer">
-            <button class="btn btn-outline demo-contact">تواصل مع مقدم الخدمة</button>
-          </div>
-        </div>
-      </article>
+<article class="listing" data-category="other" data-city="كسلا" data-search="كتب تعليم دراسة أدوات">
+<div class="listing-image">📚</div><div class="listing-body">
+<span class="listing-type">أخرى · مثال تجريبي</span><h3>كتب وأدوات تعليمية</h3>
+<p class="listing-description">مكان للكتب والأدوات الدراسية وغيرها.</p>
+<div class="listing-meta"><span>📍 كسلا</span><span class="price">السعر عند المعلن</span></div>
+<div class="listing-footer"><button class="btn btn-outline demo-contact" type="button">تواصل مع المعلن</button></div>
+</div></article>
+</div>
+<div class="empty-state" id="emptyState">ما لقينا نتائج مطابقة. جرّب كلمات بحث مختلفة أو غيّر المدينة.</div>
+<div class="notice">تنبيه: الإعلانات الظاهرة الآن أمثلة تجريبية وليست عروض بيع حقيقية.</div>
+</section>
 
-      <article class="listing" data-category="products-clothes" data-city="مدني"
-        data-search="ملابس أزياء متجر سوداني">
-        <div class="listing-image">👕</div>
-        <div class="listing-body">
-          <span class="listing-type">ملابس · مثال تجريبي</span>
-          <h3>ملابس وأزياء</h3>
-          <p class="listing-description">مكان لعرض الملابس الجديدة والمستعملة مع الصور.</p>
-          <div class="listing-meta">
-            <span>📍 مدني</span><span class="price">السعر عند المعلن</span>
-          </div>
-          <div class="listing-footer">
-            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
-          </div>
-        </div>
-      </article>
-
-      <article class="listing" data-category="products-home" data-city="بحري"
-        data-search="أثاث منزل كراسي طاولة">
-        <div class="listing-image">🛋️</div>
-        <div class="listing-body">
-          <span class="listing-type">أثاث · مثال تجريبي</span>
-          <h3>أثاث منزلي</h3>
-          <p class="listing-description">اعرض الأثاث والأغراض المنزلية للبيع.</p>
-          <div class="listing-meta">
-            <span>📍 بحري</span><span class="price">السعر عند المعلن</span>
-          </div>
-          <div class="listing-footer">
-            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
-          </div>
-        </div>
-      </article>
-
-      <article class="listing" data-category="services" data-city="بورتسودان"
-        data-search="ترجمة كتابة تدقيق لغات">
-        <div class="listing-image">📝</div>
-        <div class="listing-body">
-          <span class="listing-type">خدمات · مثال تجريبي</span>
-          <h3>ترجمة وتدقيق لغوي</h3>
-          <p class="listing-description">اعرض خبراتك اللغوية والخدمات التي تقدمها.</p>
-          <div class="listing-meta">
-            <span>📍 بورتسودان</span><span class="price">حسب الخدمة</span>
-          </div>
-          <div class="listing-footer">
-            <button class="btn btn-outline demo-contact">تواصل مع مقدم الخدمة</button>
-          </div>
-        </div>
-      </article>
-
-      <article class="listing" data-category="other" data-city="كسلا"
-        data-search="كتب تعليم دراسة أدوات">
-        <div class="listing-image">📚</div>
-        <div class="listing-body">
-          <span class="listing-type">أخرى · مثال تجريبي</span>
-          <h3>كتب وأدوات تعليمية</h3>
-          <p class="listing-description">مكان للكتب والأدوات الدراسية وغيرها.</p>
-          <div class="listing-meta">
-            <span>📍 كسلا</span><span class="price">السعر عند المعلن</span>
-          </div>
-          <div class="listing-footer">
-            <button class="btn btn-outline demo-contact">تواصل مع المعلن</button>
-          </div>
-        </div>
-      </article>
-    </div>
-
-    <div class="empty-state" id="emptyState">
-      ما لقينا نتائج مطابقة. جرّب كلمات بحث مختلفة أو غيّر المدينة.
-    </div>
-
-    <div class="notice">
-      تنبيه: الإعلانات الظاهرة الآن أمثلة تجريبية للتصميم وليست عروض بيع حقيقية.
-    </div>
-  </section>
-
-  <section class="section container" id="about">
-    <div class="section-heading">
-      <div>
-        <h2>سوقي أقرب ليك</h2>
-        <p class="subtitle">مساحة للجميع لعرض المنتجات والمهارات.</p>
-      </div>
-    </div>
-
-    <div class="trust">
-      <div class="trust-item">
-        <strong>🛍️ بيع وشراء</strong>
-        <p>اعرض المنتجات مع الصور والأسعار والمدن.</p>
-      </div>
-      <div class="trust-item">
-        <strong>💡 مهارات وخدمات</strong>
-        <p>خلّي الناس تتعرّف على خبراتك وشغلك.</p>
-      </div>
-      <div class="trust-item">
-        <strong>⭐ تقييمات مستقبلية</strong>
-        <p>نخطط لإضافة تقييمات حقيقية للحسابات بعد تسجيل الدخول.</p>
-      </div>
-    </div>
-
-    <div class="cta">
-      <div>
-        <h2>عندك حاجة تعرضها؟</h2>
-        <p>جهّز إعلانك، والخطوة الجاية حنربط الموقع بحسابات المستخدمين.</p>
-      </div>
-      <button class="btn btn-primary" id="addBottom">ابدأ بإعلانك ←</button>
-    </div>
-  </section>
+<section class="section container" id="about">
+<div class="section-heading"><div><h2>سوقي أقرب ليك</h2><p class="subtitle">مساحة للجميع لعرض المنتجات والمهارات.</p></div></div>
+<div class="trust">
+<div class="trust-item"><strong>🛍️ بيع وشراء</strong><p>اعرض المنتجات مع الصور والأسعار والمدن.</p></div>
+<div class="trust-item"><strong>💡 مهارات وخدمات</strong><p>خلّي الناس تتعرّف على خبراتك وشغلك.</p></div>
+<div class="trust-item"><strong>⭐ تقييمات مستقبلية</strong><p>نخطط لإضافة تقييمات حقيقية للحسابات.</p></div>
+</div>
+<div class="cta"><div><h2>عندك حاجة تعرضها؟</h2><p>سجّل دخولك للبدء. نشر الإعلانات يحتاج تفعيل قاعدة البيانات لاحقاً.</p></div><button class="btn btn-primary" id="addBottom" type="button">ابدأ بإعلانك ←</button></div>
+</section>
 </main>
-<div id="authModal" style="display:none;position:fixed;inset:0;z-index:1000;background:#000d;overflow:auto;padding:20px">
-  <div style="max-width:440px;margin:5vh auto;background:#15111d;border:1px solid #604182;border-radius:20px;padding:24px;color:#f7f2ff">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-      <h2 id="authTitle">تسجيل الدخول</h2>
-      <button id="closeAuth" type="button" class="btn btn-outline">✕</button>
-    </div>
+
 <footer>
-  <div class="container footer-inner">
-    <div>© <span id="year"></span> سوقي SOUQI · صنع بحب للسودان 🇸🇩</div>
-    <div class="footer-links">
-      <a href="#categories">الأقسام</a>
-      <a href="#listings">الإعلانات</a>
-      <a href="#" id="whatsappLink">تواصل مع الإدارة</a>
-    </div>
-  </div>
+<div class="container footer-inner">
+<div>© <span id="year"></span> سوقي SOUQI · صنع بحب للسودان 🇸🇩</div>
+<div class="footer-links"><a href="#categories">الأقسام</a><a href="#listings">الإعلانات</a><a href="#" id="whatsappLink">تواصل مع الإدارة</a></div>
+</div>
 </footer>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  updateProfile,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+<!-- نافذة تسجيل الدخول: موضوعة داخل body وخارج style -->
+<div id="authModal" aria-hidden="true">
+<div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+<div class="auth-heading"><h2 id="authTitle">تسجيل الدخول</h2><button id="closeAuth" type="button" class="btn btn-outline" aria-label="إغلاق">✕</button></div>
+<p style="color:var(--muted)">أهلاً بيك في سوقي 🇸🇩</p>
+<div id="authTabs" style="display:flex;gap:8px;margin:16px 0">
+<button id="loginTab" type="button" class="btn btn-primary" style="flex:1">دخول</button>
+<button id="signupTab" type="button" class="btn btn-outline" style="flex:1">حساب جديد</button>
+</div>
+<form id="authForm">
+<div id="nameWrap" style="display:none"><label for="authName">الاسم</label><input id="authName" class="auth-input" maxlength="70" autocomplete="name" placeholder="اكتب اسمك"></div>
+<label for="authEmail">البريد الإلكتروني</label>
+<input id="authEmail" class="auth-input" type="email" required autocomplete="email" placeholder="name@example.com">
+<div id="passwordWrap"><label for="authPassword">كلمة المرور</label><input id="authPassword" class="auth-input" type="password" minlength="6" autocomplete="current-password" placeholder="6 أحرف على الأقل"></div>
+<button id="submitAuth" type="submit" class="btn btn-primary" style="width:100%;margin-top:8px">تسجيل الدخول</button>
+</form>
+<button id="forgotPassword" type="button" style="display:block;background:none;border:0;color:#d3b5ff;margin:14px auto">هل نسيت كلمة السر؟</button>
+<div style="text-align:center;color:var(--muted);margin:10px">أو</div>
+<button id="googleLogin" type="button" class="btn btn-outline" style="width:100%">المتابعة باستخدام Google</button>
+<div id="authMessage" class="auth-message" role="status" aria-live="polite"></div>
+<button id="logoutBtn" type="button" class="btn btn-outline" style="display:none;width:100%;margin-top:12px">تسجيل الخروج</button>
+</div>
+</div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD62eZtdXtGXIM0Eo0XWRcu8FRmRSw8X8g",
-  authDomain: "souqe-8ccb8.firebaseapp.com",
-  projectId: "souqe-8ccb8",
-  storageBucket: "souqe-8ccb8.firebasestorage.app",
-  messagingSenderId: "602119740316",
-  appId: "1:602119740316:web:a534077bca7ad5564f0659",
-  measurementId: "G-Q8VGVJ39H3"
-};
+<!-- Firebase Compat SDK: لا يحتاج إلى import أو type=module -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+<script>
+(function () {
+"use strict";
 
-const cards = [...document.querySelectorAll(".listing")];
-const searchInput = document.getElementById("searchInput");
-const cityFilter = document.getElementById("cityFilter");
-const emptyState = document.getElementById("emptyState");
+const $ = id => document.getElementById(id);
+$("year").textContent = new Date().getFullYear();
 
-let activeCategory = "all";
+const modal = $("authModal");
+const authMessage = $("authMessage");
+const authForm = $("authForm");
+const emailInput = $("authEmail");
+const passwordInput = $("authPassword");
+const nameInput = $("authName");
+const submitAuth = $("submitAuth");
+const googleLogin = $("googleLogin");
+const logoutBtn = $("logoutBtn");
+
 let mode = "login";
+let auth = null;
+let firebaseReady = false;
 
-const modal = document.getElementById("authModal");
-const authForm = document.getElementById("authForm");
-const authTitle = document.getElementById("authTitle");
-const nameWrap = document.getElementById("nameWrap");
-const nameInput = document.getElementById("authName");
-const emailInput = document.getElementById("authEmail");
-const passwordInput = document.getElementById("authPassword");
-const submitAuth = document.getElementById("submitAuth");
-const authMessage = document.getElementById("authMessage");
-const forgotPassword = document.getElementById("forgotPassword");
-const googleLogin = document.getElementById("googleLogin");
-const logoutBtn = document.getElementById("logoutBtn");
-
-document.getElementById("year").textContent = new Date().getFullYear();
-
-function message(text, success = false) {
+function showMessage(text, type) {
   authMessage.textContent = text;
-  authMessage.style.color = success ? "#9be7b0" : "#ffabb8";
+  authMessage.className = "auth-message " + (type || "error");
 }
 
-function openAuth(nextMode = "login") {
+function openAuth(nextMode) {
   modal.style.display = "block";
-  setMode(nextMode);
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  setMode(nextMode || "login");
 }
 
 function closeAuth() {
   modal.style.display = "none";
-  authMessage.textContent = "";
+  modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
 }
 
 function setMode(nextMode) {
   mode = nextMode;
   authMessage.textContent = "";
+  authMessage.className = "auth-message";
 
   const signup = mode === "signup";
   const reset = mode === "reset";
 
-  authTitle.textContent = reset
-    ? "استعادة كلمة المرور"
-    : signup ? "إنشاء حساب جديد" : "تسجيل الدخول";
-
-  nameWrap.style.display = signup ? "block" : "none";
+  $("authTitle").textContent = reset ? "استعادة كلمة المرور" : signup ? "إنشاء حساب جديد" : "تسجيل الدخول";
+  $("nameWrap").style.display = signup ? "block" : "none";
   nameInput.required = signup;
+  $("passwordWrap").style.display = reset ? "none" : "block";
   passwordInput.required = !reset;
-  passwordInput.style.display = reset ? "none" : "block";
-  document.getElementById("passwordWrap").style.display = reset ? "none" : "block";
-  document.getElementById("authTabs").style.display = reset ? "none" : "flex";
+  passwordInput.disabled = reset;
+  $("authTabs").style.display = reset ? "none" : "flex";
   googleLogin.style.display = reset ? "none" : "block";
-  forgotPassword.style.display = reset ? "none" : "block";
-
-  submitAuth.textContent = reset
-    ? "إرسال رابط الاستعادة"
-    : signup ? "إنشاء الحساب" : "تسجيل الدخول";
-
-  document.getElementById("loginTab").className =
-    "btn " + (!signup && !reset ? "btn-primary" : "btn-outline");
-  document.getElementById("signupTab").className =
-    "btn " + (signup ? "btn-primary" : "btn-outline");
+  $("forgotPassword").style.display = reset ? "none" : "block";
+  submitAuth.textContent = reset ? "إرسال رابط الاستعادة" : signup ? "إنشاء الحساب" : "تسجيل الدخول";
+  $("loginTab").className = "btn " + (!signup && !reset ? "btn-primary" : "btn-outline");
+  $("signupTab").className = "btn " + (signup ? "btn-primary" : "btn-outline");
 }
 
-document.getElementById("loginTop").addEventListener("click", () => openAuth());
-document.getElementById("closeAuth").addEventListener("click", closeAuth);
-document.getElementById("loginTab").addEventListener("click", () => setMode("login"));
-document.getElementById("signupTab").addEventListener("click", () => setMode("signup"));
-forgotPassword.addEventListener("click", () => setMode("reset"));
+$("loginTop").addEventListener("click", () => openAuth("login"));
+$("closeAuth").addEventListener("click", closeAuth);
+$("loginTab").addEventListener("click", () => setMode("login"));
+$("signupTab").addEventListener("click", () => setMode("signup"));
+$("forgotPassword").addEventListener("click", () => setMode("reset"));
 
 modal.addEventListener("click", event => {
   if (event.target === modal) closeAuth();
 });
 
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && modal.style.display === "block") closeAuth();
+});
+
 function friendlyError(error) {
-  const errors = {
+  const messages = {
     "auth/email-already-in-use": "البريد الإلكتروني مسجل مسبقاً. جرّب تسجيل الدخول.",
     "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
     "auth/weak-password": "كلمة المرور ضعيفة؛ استخدم 6 أحرف على الأقل.",
-    "auth/invalid-credential": "البريد أو كلمة المرور غير صحيحة.",
+    "auth/invalid-credential": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
     "auth/user-not-found": "ما لقينا حساباً بهذا البريد.",
     "auth/wrong-password": "كلمة المرور غير صحيحة.",
     "auth/popup-closed-by-user": "أغلقت نافذة Google قبل إكمال الدخول.",
-    "auth/popup-blocked": "المتصفح منع نافذة Google. اسمح بالنوافذ المنبثقة ثم حاول.",
-    "auth/unauthorized-domain": "عنوان الموقع غير مضاف إلى Authorized domains في Firebase.",
+    "auth/popup-blocked": "المتصفح منع نافذة Google. اسمح بالنوافذ المنبثقة وحاول مجدداً.",
+    "auth/unauthorized-domain": "أضف عنوان موقعك في Firebase ضمن Authorized domains.",
+    "auth/operation-not-allowed": "طريقة تسجيل الدخول هذه غير مفعلة في Firebase.",
     "auth/too-many-requests": "محاولات كثيرة. انتظر قليلاً ثم حاول مجدداً.",
-    "auth/network-request-failed": "تحقق من اتصال الإنترنت وحاول مجدداً."
+    "auth/network-request-failed": "تحقق من اتصال الإنترنت وحاول مجدداً.",
+    "auth/invalid-api-key": "تحقق من إعدادات Firebase ومفتاح API."
   };
-  return errors[error.code] || "تعذر إكمال العملية. تحقق من إعدادات Firebase والإنترنت.";
+  return messages[error.code] || ("تعذر إكمال العملية. " + (error.message || "تحقق من إعدادات Firebase والإنترنت."));
+}
+
+function requireFirebase() {
+  if (firebaseReady && auth) return true;
+  showMessage("تعذر تحميل Firebase. تحقق من اتصال الإنترنت وأعد تحميل الصفحة.", "error");
+  return false;
 }
 
 authForm.addEventListener("submit", async event => {
   event.preventDefault();
+  if (!requireFirebase()) return;
+
   submitAuth.disabled = true;
-  message("جارٍ تنفيذ الطلب...");
+  showMessage("جارٍ تنفيذ الطلب...", "success");
 
   try {
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
     if (mode === "reset") {
-      await sendPasswordResetEmail(auth, email);
-      message("إذا كان البريد مسجلاً، فسيصلك رابط استعادة كلمة المرور. تحقق من صندوق البريد والرسائل غير المرغوب فيها.", true);
+      await auth.sendPasswordResetEmail(email);
+      showMessage("إذا كان البريد مسجلاً، فسيصلك رابط استعادة كلمة المرور. افحص صندوق البريد والرسائل غير المرغوب فيها.", "success");
     } else if (mode === "signup") {
       const name = nameInput.value.trim();
-      if (!name) throw new Error("اكتب اسمك أولاً.");
-
-      const credential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(credential.user, { displayName: name });
-
-      message("تم إنشاء الحساب بنجاح.", true);
-      setTimeout(closeAuth, 1000);
+      if (!name) {
+        showMessage("اكتب اسمك أولاً.", "error");
+        return;
+      }
+      const credential = await auth.createUserWithEmailAndPassword(email, password);
+      await credential.user.updateProfile({ displayName: name });
+      showMessage("تم إنشاء الحساب بنجاح.", "success");
+      setTimeout(closeAuth, 900);
     } else {
-      await signInWithEmailAndPassword(auth, email, password);
-      message("تم تسجيل الدخول بنجاح.", true);
+      await auth.signInWithEmailAndPassword(email, password);
+      showMessage("تم تسجيل الدخول بنجاح.", "success");
       setTimeout(closeAuth, 700);
     }
   } catch (error) {
-    message(error.message && !error.code ? error.message : friendlyError(error));
+    showMessage(friendlyError(error), "error");
   } finally {
     submitAuth.disabled = false;
   }
 });
 
 googleLogin.addEventListener("click", async () => {
+  if (!requireFirebase()) return;
+
   googleLogin.disabled = true;
-  message("جارٍ فتح Google...");
+  showMessage("جارٍ فتح Google...", "success");
 
   try {
-    await signInWithPopup(auth, googleProvider);
-    message("تم تسجيل الدخول باستخدام Google.", true);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
+    showMessage("تم تسجيل الدخول باستخدام Google.", "success");
     setTimeout(closeAuth, 700);
   } catch (error) {
-    message(friendlyError(error));
+    showMessage(friendlyError(error), "error");
   } finally {
     googleLogin.disabled = false;
   }
 });
 
 logoutBtn.addEventListener("click", async () => {
+  if (!requireFirebase()) return;
   try {
-    await signOut(auth);
-    message("تم تسجيل الخروج.", true);
+    await auth.signOut();
+    showMessage("تم تسجيل الخروج.", "success");
   } catch (error) {
-    message(friendlyError(error));
+    showMessage(friendlyError(error), "error");
   }
 });
 
-onAuthStateChanged(auth, user => {
-  logoutBtn.style.display = user ? "block" : "none";
-  document.getElementById("loginTop").textContent = user
-    ? "حسابي: " + (user.displayName || user.email)
-    : "دخول / حساب جديد";
-});
+function initFirebase() {
+  try {
+    if (!window.firebase) throw new Error("Firebase SDK لم يتم تحميله.");
 
-function filterListings() {
-  const term = searchInput.value.trim().toLowerCase();
-  const city = cityFilter.value;
-  let visible = 0;
+    const firebaseConfig = {
+      apiKey: "AIzaSyD62eZtdXtGXIM0Eo0XWRcu8FRmRSw8X8g",
+      authDomain: "souqe-8ccb8.firebaseapp.com",
+      projectId: "souqe-8ccb8",
+      storageBucket: "souqe-8ccb8.firebasestorage.app",
+      messagingSenderId: "602119740316",
+      appId: "1:602119740316:web:a534077bca7ad5564f0659",
+      measurementId: "G-Q8VGVJ39H3"
+    };
 
-  cards.forEach(card => {
-    const matchesTerm = (card.dataset.search + " " + card.innerText)
-      .toLowerCase().includes(term);
-    const matchesCity = !city || card.dataset.city === city;
-    const category = card.dataset.category;
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    firebaseReady = true;
 
-    let matchesCategory = activeCategory === "all";
-
-    if (activeCategory === "products") {
-      matchesCategory = category === "products";
-    } else if (
-      activeCategory === "products-clothes" ||
-      activeCategory === "products-home"
-    ) {
-      matchesCategory = category === activeCategory;
-    } else if (activeCategory === "services") {
-      matchesCategory = category === "services";
-    } else if (activeCategory === "other") {
-      matchesCategory = category === "other";
-    }
-
-    const show = matchesTerm && matchesCity && matchesCategory;
-    card.style.display = show ? "" : "none";
-    if (show) visible++;
-  });
-
-  emptyState.style.display = visible ? "none" : "block";
+    auth.onAuthStateChanged(user => {
+      logoutBtn.style.display = user ? "block" : "none";
+      $("loginTop").textContent = user
+        ? "حسابي: " + (user.displayName || user.email)
+        : "دخول / حساب جديد";
+    });
+  } catch (error) {
+    console.error("Firebase initialization error:", error);
+    firebaseReady = false;
+  }
 }
 
-document.querySelectorAll(".category").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".category").forEach(item =>
-      item.classList.remove("active")
-    );
-    button.classList.add("active");
-    activeCategory = button.dataset.category;
-    filterListings();
-    document.getElementById("listings").scrollIntoView({ behavior: "smooth" });
-  });
-});
-
-document.getElementById("searchForm").addEventListener("submit", event => {
-  event.preventDefault();
-  filterListings();
-  document.getElementById("listings").scrollIntoView({ behavior: "smooth" });
-});
-
-searchInput.addEventListener("input", filterListings);
-cityFilter.addEventListener("change", filterListings);
-
-document.getElementById("clearFilters").addEventListener("click", () => {
-  searchInput.value = "";
-  cityFilter.value = "";
-  activeCategory = "all";
-  document.querySelectorAll(".category").forEach(item =>
-    item.classList.toggle("active", item.dataset.category === "all")
-  );
-  filterListings();
-});
-
-async function addListingNotice() {
-  if (!auth.currentUser) {
+function addListingNotice() {
+  if (!requireFirebase()) {
     openAuth("login");
-    message("سجّل الدخول أولاً. نشر الإعلانات الحقيقية يحتاج ربط قاعدة البيانات.");
     return;
   }
-
-  alert("تم تسجيل دخولك. نشر الإعلانات سيُفعّل بعد ربط نموذج الإعلان بقاعدة بيانات Firestore.");
+  if (!auth.currentUser) {
+    openAuth("login");
+    showMessage("سجّل الدخول أولاً. نشر الإعلانات الحقيقية لم يتم تفعيله بعد.", "error");
+    return;
+  }
+  alert("تم تسجيل دخولك. نموذج نشر الإعلانات وربط Firestore يحتاجان إلى خطوة تطوير منفصلة.");
 }
 
 ["addTop", "addHero", "addBottom"].forEach(id => {
-  document.getElementById(id).addEventListener("click", addListingNotice);
+  $(id).addEventListener("click", addListingNotice);
 });
 
 document.querySelectorAll(".demo-contact").forEach(button => {
@@ -952,11 +464,73 @@ document.querySelectorAll(".demo-contact").forEach(button => {
   });
 });
 
-document.getElementById("whatsappLink").addEventListener("click", event => {
+$("whatsappLink").addEventListener("click", event => {
   event.preventDefault();
   alert("سيتم تفعيل واتساب الإدارة بعد إضافة رقم التواصل.");
 });
-</script>
 
+/* البحث والتصفية */
+const cards = Array.from(document.querySelectorAll(".listing"));
+let activeCategory = "all";
+
+function filterListings() {
+  const term = $("searchInput").value.trim().toLowerCase();
+  const city = $("cityFilter").value;
+  let visible = 0;
+
+  cards.forEach(card => {
+    const text = ((card.dataset.search || "") + " " + card.innerText).toLowerCase();
+    const matchesTerm = text.includes(term);
+    const matchesCity = !city || card.dataset.city === city;
+    const category = card.dataset.category;
+    let matchesCategory = activeCategory === "all";
+
+    if (activeCategory === "products") matchesCategory = category === "products";
+    else if (activeCategory === "products-clothes") matchesCategory = category === "products-clothes";
+    else if (activeCategory === "products-home") matchesCategory = category === "products-home";
+    else if (activeCategory === "services") matchesCategory = category === "services";
+    else if (activeCategory === "other") matchesCategory = category === "other";
+
+    const show = matchesTerm && matchesCity && matchesCategory;
+    card.style.display = show ? "" : "none";
+    if (show) visible++;
+  });
+
+  $("emptyState").style.display = visible ? "none" : "block";
+}
+
+document.querySelectorAll(".category").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".category").forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+    activeCategory = button.dataset.category;
+    filterListings();
+    $("listings").scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+$("searchForm").addEventListener("submit", event => {
+  event.preventDefault();
+  filterListings();
+  $("listings").scrollIntoView({ behavior: "smooth" });
+});
+
+$("searchInput").addEventListener("input", filterListings);
+$("cityFilter").addEventListener("change", filterListings);
+
+$("clearFilters").addEventListener("click", () => {
+  $("searchInput").value = "";
+  $("cityFilter").value = "";
+  activeCategory = "all";
+  document.querySelectorAll(".category").forEach(item => {
+    item.classList.toggle("active", item.dataset.category === "all");
+  });
+  filterListings();
+});
+
+/* شغّل الواجهة أولاً، ثم حاول تهيئة Firebase */
+initFirebase();
+})();
+</script>
 </body>
 </html>
