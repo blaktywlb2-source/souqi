@@ -331,12 +331,7 @@
 
     .cta h2 { margin-bottom: 8px; }
     .cta p { color: #c8bbd5; margin: 0; }
-<div id="authModal" style="display:none;position:fixed;inset:0;z-index:1000;background:#000d;overflow:auto;padding:20px">
-  <div style="max-width:440px;margin:5vh auto;background:#15111d;border:1px solid #604182;border-radius:20px;padding:24px;color:#f7f2ff">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-      <h2 id="authTitle">تسجيل الدخول</h2>
-      <button id="closeAuth" type="button" class="btn btn-outline">✕</button>
-    </div>
+
 
     <p style="color:#aaa2b7">أهلاً بيك في سوقي 🇸🇩</p>
 
@@ -668,7 +663,12 @@
     </div>
   </section>
 </main>
-
+<div id="authModal" style="display:none;position:fixed;inset:0;z-index:1000;background:#000d;overflow:auto;padding:20px">
+  <div style="max-width:440px;margin:5vh auto;background:#15111d;border:1px solid #604182;border-radius:20px;padding:24px;color:#f7f2ff">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <h2 id="authTitle">تسجيل الدخول</h2>
+      <button id="closeAuth" type="button" class="btn btn-outline">✕</button>
+    </div>
 <footer>
   <div class="container footer-inner">
     <div>© <span id="year"></span> سوقي SOUQI · صنع بحب للسودان 🇸🇩</div>
@@ -957,7 +957,6 @@ document.getElementById("whatsappLink").addEventListener("click", event => {
   alert("سيتم تفعيل واتساب الإدارة بعد إضافة رقم التواصل.");
 });
 </script>
-</body>
-</html>
+
 </body>
 </html>
