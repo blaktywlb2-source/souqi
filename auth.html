@@ -1,1 +1,566 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0910">
+  <meta name="description" content="تسجيل الدخول وإنشاء حساب في سوقي">
+  <title>الدخول إلى سوقي | SOUQI</title>
 
+  <style>
+    :root {
+      --bg:#0b0910; --card:#15111d; --purple:#9861f5;
+      --gold:#d8b66a; --text:#f7f2ff; --muted:#aaa2b7;
+      --border:#30253f;
+    }
+
+    * { box-sizing:border-box; }
+
+    body {
+      margin:0; min-height:100vh;
+      background:
+        radial-gradient(ellipse at 15% 10%,#44266a55,transparent 42%),
+        radial-gradient(ellipse at 90% 90%,#a47a2820,transparent 40%),
+        var(--bg);
+      color:var(--text); font-family:Tahoma,Arial,sans-serif;
+      line-height:1.7; display:flex; flex-direction:column;
+    }
+
+    a { color:inherit; text-decoration:none; }
+    button,input { font:inherit; }
+    button { cursor:pointer; }
+    button:disabled { opacity:.6; cursor:not-allowed; }
+
+    .container { width:min(1080px,92%); margin:auto; }
+
+    header {
+      border-bottom:1px solid var(--border);
+      background:#0b0910d9;
+    }
+
+    .nav {
+      min-height:76px; display:flex; align-items:center;
+      justify-content:space-between; gap:15px;
+    }
+
+    .brand { display:flex; align-items:center; gap:11px; }
+    .brand-icon {
+      width:46px; height:46px; display:grid; place-items:center;
+      border-radius:15px; background:linear-gradient(135deg,#352052,#171020);
+      border:1px solid #72509c; color:var(--gold); font-size:25px;
+    }
+
+    .brand-name {
+      font-size:24px; font-weight:900; color:var(--gold); line-height:1.2;
+    }
+
+    .brand-sub { color:var(--muted); font-size:10px; letter-spacing:2px; }
+    .back { color:#d3b5ff; font-size:14px; }
+
+    main { flex:1; display:grid; place-items:center; padding:36px 0; }
+
+    .auth-layout {
+      width:min(940px,100%); display:grid;
+      grid-template-columns:1fr 1fr; gap:24px; align-items:stretch;
+    }
+
+    .intro,.auth-card {
+      border:1px solid var(--border); border-radius:24px;
+      padding:clamp(22px,4vw,38px);
+    }
+
+    .intro {
+      background:linear-gradient(145deg,#21152fdd,#121019e8);
+      display:flex; flex-direction:column; justify-content:center;
+    }
+
+    .eyebrow {
+      display:inline-block; align-self:flex-start; padding:6px 12px;
+      border:1px solid #63458c; border-radius:30px; color:#d3b5ff;
+      background:#251834; font-size:12px;
+    }
+
+    h1 { font-size:clamp(30px,4vw,43px); line-height:1.4; margin:18px 0 10px; }
+    h1 span { color:var(--gold); }
+    .intro p { color:var(--muted); margin:0; }
+
+    .features { display:grid; gap:12px; margin-top:24px; }
+
+    .feature {
+      padding:12px 14px; border:1px solid #30253f;
+      border-radius:13px; background:#100d17;
+    }
+
+    .feature strong { color:var(--gold); display:block; font-size:14px; }
+    .feature small { color:var(--muted); }
+
+    .auth-card { background:#15111df2; box-shadow:0 20px 60px #0004; }
+
+    .tabs {
+      display:grid; grid-template-columns:1fr 1fr; gap:8px;
+      padding:5px; background:#0e0b14; border-radius:13px; margin-bottom:22px;
+    }
+
+    .tab {
+      border:0; border-radius:10px; padding:10px;
+      background:transparent; color:var(--muted); font-weight:bold;
+    }
+
+    .tab.active { background:#2a1b3c; color:#fff; border:1px solid #604182; }
+    h2 { margin:0 0 5px; font-size:24px; }
+    .sub { color:var(--muted); font-size:13px; margin:0 0 20px; }
+
+    label { display:block; font-size:13px; margin:14px 0 6px; color:#e2d8ee; }
+
+    input {
+      width:100%; padding:12px 13px; border-radius:11px;
+      border:1px solid var(--border); outline:none;
+      background:#0e0b14; color:var(--text);
+    }
+
+    input:focus { border-color:var(--purple); box-shadow:0 0 0 3px #9861f522; }
+
+    .btn {
+      width:100%; display:flex; align-items:center; justify-content:center;
+      gap:8px; padding:12px 15px; border:1px solid transparent;
+      border-radius:12px; font-weight:bold; transition:.2s;
+    }
+
+    .primary {
+      color:white; background:linear-gradient(135deg,#9861f5,#7041bd);
+      margin-top:18px;
+    }
+
+    .primary:hover { filter:brightness(1.12); }
+
+    .google {
+      color:var(--text); background:#191420;
+      border-color:#49365d; margin-top:12px;
+    }
+
+    .google:hover { border-color:#9861f5; }
+
+    .secondary {
+      color:#e2d8ee; background:#21182d;
+      border-color:#49365d; margin-top:10px;
+    }
+
+    .text-button {
+      display:block; width:100%; background:none; border:0;
+      color:#d3b5ff; padding:10px 4px; font-size:13px;
+    }
+
+    .divider {
+      display:flex; align-items:center; gap:12px; color:#80758d;
+      font-size:12px; margin:17px 0;
+    }
+
+    .divider:before,.divider:after {
+      content:""; height:1px; flex:1; background:var(--border);
+    }
+
+    .message {
+      display:none; margin-top:14px; padding:11px 12px;
+      border-radius:10px; font-size:13px; overflow-wrap:anywhere;
+    }
+
+    .message.error { display:block; background:#381c27; border:1px solid #743447; color:#ffc5d1; }
+    .message.success { display:block; background:#173326; border:1px solid #2b6948; color:#c4f6d7; }
+    .message.info { display:block; background:#211b32; border:1px solid #604182; color:#e2d3ff; }
+
+    .helper { font-size:12px; color:var(--muted); margin-top:15px; }
+    .hidden { display:none!important; }
+
+    footer {
+      border-top:1px solid var(--border); padding:20px 0;
+      color:var(--muted); font-size:12px; text-align:center;
+    }
+
+    @media(max-width:760px) {
+      .auth-layout { grid-template-columns:1fr; }
+      .intro { padding:24px; }
+      .features { grid-template-columns:1fr 1fr; }
+    }
+
+    @media(max-width:420px) {
+      .features { grid-template-columns:1fr; }
+      .nav { min-height:68px; }
+      .brand-name { font-size:21px; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="index.html" aria-label="العودة إلى سوقي">
+      <div class="brand-icon">س</div>
+      <div>
+        <div class="brand-name">سوقي</div>
+        <div class="brand-sub">SOUQI · SUDAN</div>
+      </div>
+    </a>
+    <a class="back" href="index.html">← العودة للسوق</a>
+  </div>
+</header>
+
+<main class="container">
+  <div class="auth-layout">
+    <section class="intro">
+      <span class="eyebrow">🇸🇩 سوق السودان في مكان واحد</span>
+      <h1>أهلاً بيك في<br><span>سوقي</span></h1>
+      <p>سجّل دخولك أو أنشئ حسابك عشان تكون جاهز تعرض منتجاتك وخدماتك وتتابع إعلاناتك.</p>
+
+      <div class="features">
+        <div class="feature">
+          <strong>🛍️ بيع وشراء</strong>
+          <small>جهّز حسابك للإعلانات.</small>
+        </div>
+        <div class="feature">
+          <strong>🔐 حسابك خاص</strong>
+          <small>تأكيد البريد يساعد في حماية حسابك.</small>
+        </div>
+        <div class="feature">
+          <strong>📍 سوق السودان</strong>
+          <small>منتجات وخدمات من مدن مختلفة.</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-card" aria-label="تسجيل الدخول">
+      <div class="tabs">
+        <button class="tab active" id="loginTab" type="button">تسجيل الدخول</button>
+        <button class="tab" id="signupTab" type="button">إنشاء حساب</button>
+      </div>
+
+      <h2 id="formTitle">مرحباً بعودتك</h2>
+      <p class="sub" id="formSubtitle">أدخل بريدك الإلكتروني وكلمة المرور.</p>
+
+      <form id="authForm">
+        <div id="nameWrap" class="hidden">
+          <label for="displayName">الاسم</label>
+          <input id="displayName" type="text" autocomplete="name"
+                 maxlength="70" placeholder="اكتب اسمك">
+        </div>
+
+        <label for="email">البريد الإلكتروني</label>
+        <input id="email" type="email" autocomplete="email"
+               required placeholder="name@example.com">
+
+        <label for="password">كلمة المرور</label>
+        <input id="password" type="password" autocomplete="current-password"
+               minlength="6" required placeholder="6 أحرف على الأقل">
+
+        <button class="btn primary" id="submitBtn" type="submit">تسجيل الدخول</button>
+      </form>
+
+      <button class="text-button" id="resetBtn" type="button">نسيت كلمة المرور؟</button>
+      <button class="btn secondary hidden" id="resendBtn" type="button">
+        إعادة إرسال رابط تأكيد البريد
+      </button>
+
+      <div class="divider">أو</div>
+
+      <button class="btn google" id="googleBtn" type="button">
+        <span aria-hidden="true">G</span> المتابعة باستخدام Google
+      </button>
+
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+
+      <p class="helper">
+        عند إنشاء حساب، استخدم بريدك الحقيقي حتى تتمكن من تأكيده واستعادة كلمة المرور.
+      </p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="container">© <span id="year"></span> سوقي SOUQI · صنع بحب للسودان 🇸🇩</div>
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    updateProfile,
+    sendEmailVerification,
+    sendPasswordResetEmail,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD62eZtdXtGXIM0Eo0XWRcu8FRmRSw8X8g",
+    authDomain: "souqe-8ccb8.firebaseapp.com",
+    projectId: "souqe-8ccb8",
+    storageBucket: "souqe-8ccb8.firebasestorage.app",
+    messagingSenderId: "602119740316",
+    appId: "1:602119740316:web:a534077bca7ad5564f0659",
+    measurementId: "G-Q8VGVJ39H3"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const loginTab = document.getElementById("loginTab");
+  const signupTab = document.getElementById("signupTab");
+  const form = document.getElementById("authForm");
+  const title = document.getElementById("formTitle");
+  const subtitle = document.getElementById("formSubtitle");
+  const nameWrap = document.getElementById("nameWrap");
+  const nameInput = document.getElementById("displayName");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const submitBtn = document.getElementById("submitBtn");
+  const googleBtn = document.getElementById("googleBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const resendBtn = document.getElementById("resendBtn");
+  const message = document.getElementById("message");
+
+  let mode = "login";
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  function showMessage(text, kind = "error") {
+    message.textContent = text;
+    message.className = "message " + kind;
+  }
+
+  function clearMessage() {
+    message.textContent = "";
+    message.className = "message";
+    resendBtn.classList.add("hidden");
+  }
+
+  function setMode(nextMode) {
+    mode = nextMode;
+    clearMessage();
+
+    const signup = mode === "signup";
+    loginTab.classList.toggle("active", !signup);
+    signupTab.classList.toggle("active", signup);
+    nameWrap.classList.toggle("hidden", !signup);
+    nameInput.required = signup;
+    passwordInput.autocomplete = signup ? "new-password" : "current-password";
+
+    title.textContent = signup ? "أنشئ حسابك" : "مرحباً بعودتك";
+    subtitle.textContent = signup
+      ? "أدخل اسمك وبريدك الحقيقي وأنشئ كلمة مرور."
+      : "أدخل بريدك الإلكتروني وكلمة المرور.";
+
+    submitBtn.textContent = signup ? "إنشاء الحساب" : "تسجيل الدخول";
+    resetBtn.classList.toggle("hidden", signup);
+  }
+
+  loginTab.addEventListener("click", () => setMode("login"));
+  signupTab.addEventListener("click", () => setMode("signup"));
+
+  function friendlyError(error) {
+    const errors = {
+      "auth/email-already-in-use": "هذا البريد مسجل بالفعل. جرّب تسجيل الدخول.",
+      "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
+      "auth/weak-password": "كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.",
+      "auth/invalid-credential": "البريد أو كلمة المرور غير صحيحة.",
+      "auth/user-disabled": "هذا الحساب موقوف.",
+      "auth/too-many-requests": "محاولات كثيرة. انتظر قليلاً ثم حاول مجدداً.",
+      "auth/popup-closed-by-user": "أُغلقت نافذة Google قبل اكتمال تسجيل الدخول.",
+      "auth/popup-blocked": "المتصفح منع نافذة Google. اسمح بالنوافذ المنبثقة ثم أعد المحاولة.",
+      "auth/unauthorized-domain": "نطاق الموقع غير مسموح به في Firebase. أضفه إلى Authorized domains.",
+      "auth/network-request-failed": "تعذر الاتصال. تحقق من الإنترنت وحاول مجدداً.",
+      "auth/operation-not-allowed": "طريقة تسجيل الدخول هذه غير مفعّلة في Firebase."
+    };
+
+    return errors[error?.code] ||
+      "تعذر إكمال العملية. راجع إعدادات Firebase وحاول مجدداً.";
+  }
+
+  function goToMarket() {
+    window.location.href = "index.html";
+  }
+
+  async function sendVerification(user) {
+    await sendEmailVerification(user);
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    clearMessage();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "جارٍ التنفيذ...";
+
+    try {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (mode === "signup") {
+        const name = nameInput.value.trim();
+        if (!name) throw new Error("اكتب اسمك أولاً.");
+
+        const credential = await createUserWithEmailAndPassword(
+          auth, email, password
+        );
+
+        await updateProfile(credential.user, { displayName: name });
+
+        try {
+          await sendVerification(credential.user);
+        } catch (emailError) {
+          console.error("Verification email error:", emailError);
+          await signOut(auth);
+          showMessage(
+            "تم إنشاء الحساب، لكن تعذر إرسال رابط التأكيد. جرّب تسجيل الدخول لاحقاً ثم إعادة إرسال الرابط، أو افحص إعدادات البريد في Firebase.",
+            "error"
+          );
+          return;
+        }
+
+        await signOut(auth);
+
+        showMessage(
+          "تم إنشاء الحساب. أرسلنا رابط تأكيد إلى بريدك؛ افتح الرسالة واضغط الرابط، ثم ارجع وسجّل الدخول.",
+          "success"
+        );
+
+        setMode("login");
+        showMessage(
+          "تم إنشاء الحساب وإرسال رابط التأكيد. افحص البريد الوارد والرسائل غير المرغوب فيها، ثم سجّل الدخول بعد التأكيد.",
+          "success"
+        );
+
+      } else {
+        const credential = await signInWithEmailAndPassword(
+          auth, email, password
+        );
+
+        const user = credential.user;
+
+        if (!user.emailVerified) {
+          await signOut(auth);
+          showMessage(
+            "لم يتم تأكيد بريدك الإلكتروني بعد. افتح رابط التأكيد الذي أرسلناه لك، أو اضغط إعادة إرسال الرابط.",
+            "error"
+          );
+          resendBtn.classList.remove("hidden");
+          return;
+        }
+
+        showMessage("تم تسجيل الدخول بنجاح. جارٍ تحويلك إلى السوق...", "success");
+        setTimeout(goToMarket, 900);
+      }
+
+    } catch (error) {
+      console.error(error);
+      showMessage(error.message && !error.code ? error.message : friendlyError(error));
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = mode === "signup" ? "إنشاء الحساب" : "تسجيل الدخول";
+    }
+  });
+
+  resendBtn.addEventListener("click", async () => {
+    clearMessage();
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+      showMessage("اكتب البريد وكلمة المرور أولاً لإعادة إرسال رابط التأكيد.");
+      return;
+    }
+
+    resendBtn.disabled = true;
+    resendBtn.textContent = "جارٍ إرسال الرابط...";
+
+    try {
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+
+      if (credential.user.emailVerified) {
+        await signOut(auth);
+        showMessage("هذا البريد مؤكد بالفعل. يمكنك تسجيل الدخول.", "success");
+        return;
+      }
+
+      await sendEmailVerification(credential.user);
+      await signOut(auth);
+
+      showMessage(
+        "طلبنا إرسال رابط تأكيد جديد. افحص البريد الوارد ومجلد الرسائل غير المرغوب فيها.",
+        "success"
+      );
+
+    } catch (error) {
+      console.error(error);
+      showMessage(friendlyError(error));
+    } finally {
+      resendBtn.disabled = false;
+      resendBtn.textContent = "إعادة إرسال رابط تأكيد البريد";
+    }
+  });
+
+  resetBtn.addEventListener("click", async () => {
+    clearMessage();
+
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      showMessage("اكتب بريدك الإلكتروني في الحقل أولاً، ثم اضغط نسيت كلمة المرور.");
+      emailInput.focus();
+      return;
+    }
+
+    resetBtn.disabled = true;
+    resetBtn.textContent = "جارٍ إرسال الرابط...";
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+
+      showMessage(
+        "إذا كان البريد مسجلاً، فسيتم إرسال تعليمات إعادة تعيين كلمة المرور. افحص البريد الوارد والرسائل غير المرغوب فيها.",
+        "success"
+      );
+    } catch (error) {
+      console.error(error);
+      showMessage(friendlyError(error));
+    } finally {
+      resetBtn.disabled = false;
+      resetBtn.textContent = "نسيت كلمة المرور؟";
+    }
+  });
+
+  googleBtn.addEventListener("click", async () => {
+    clearMessage();
+    googleBtn.disabled = true;
+    googleBtn.textContent = "جارٍ فتح Google...";
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      if (!result.user.emailVerified) {
+        await signOut(auth);
+        showMessage(
+          "تعذر التأكد من البريد المرتبط بهذا الحساب. جرّب حساب Google آخر.",
+          "error"
+        );
+        return;
+      }
+
+      showMessage("تم تسجيل الدخول باستخدام Google. جارٍ تحويلك...", "success");
+      setTimeout(goToMarket, 900);
+
+    } catch (error) {
+      console.error(error);
+      showMessage(friendlyError(error));
+    } finally {
+      googleBtn.disabled = false;
+      googleBtn.innerHTML = '<span aria-hidden="true">G</span> المتابعة باستخدام Google';
+    }
+  });
+</script>
+</body>
+</html>
