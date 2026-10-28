@@ -331,7 +331,51 @@
 
     .cta h2 { margin-bottom: 8px; }
     .cta p { color: #c8bbd5; margin: 0; }
+<div id="authModal" style="display:none;position:fixed;inset:0;z-index:1000;background:#000d;overflow:auto;padding:20px">
+  <div style="max-width:440px;margin:5vh auto;background:#15111d;border:1px solid #604182;border-radius:20px;padding:24px;color:#f7f2ff">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <h2 id="authTitle">تسجيل الدخول</h2>
+      <button id="closeAuth" type="button" class="btn btn-outline">✕</button>
+    </div>
 
+    <p style="color:#aaa2b7">أهلاً بيك في سوقي 🇸🇩</p>
+
+    <div id="authTabs" style="display:flex;gap:8px;margin:18px 0">
+      <button id="loginTab" type="button" class="btn btn-primary" style="flex:1">دخول</button>
+      <button id="signupTab" type="button" class="btn btn-outline" style="flex:1">حساب جديد</button>
+    </div>
+
+    <form id="authForm">
+      <div id="nameWrap" style="display:none">
+        <label for="authName">الاسم</label>
+        <input id="authName" maxlength="70" placeholder="اكتب اسمك" style="width:100%;padding:12px;margin:8px 0 14px;background:#0b0910;color:white;border:1px solid #30253f;border-radius:10px">
+      </div>
+
+      <label for="authEmail">البريد الإلكتروني</label>
+      <input id="authEmail" type="email" required autocomplete="email" placeholder="name@example.com" style="width:100%;padding:12px;margin:8px 0 14px;background:#0b0910;color:white;border:1px solid #30253f;border-radius:10px">
+
+      <div id="passwordWrap">
+        <label for="authPassword">كلمة المرور</label>
+        <input id="authPassword" type="password" minlength="6" autocomplete="current-password" placeholder="6 أحرف على الأقل" style="width:100%;padding:12px;margin:8px 0 14px;background:#0b0910;color:white;border:1px solid #30253f;border-radius:10px">
+      </div>
+
+      <button id="submitAuth" type="submit" class="btn btn-primary" style="width:100%;margin-top:12px">تسجيل الدخول</button>
+    </form>
+
+    <button id="forgotPassword" type="button" style="display:block;background:none;border:0;color:#d3b5ff;cursor:pointer;margin:15px auto">
+      هل نسيت كلمة السر؟
+    </button>
+
+    <div style="text-align:center;color:#aaa2b7;margin:12px">أو</div>
+
+    <button id="googleLogin" type="button" class="btn btn-outline" style="width:100%">
+      المتابعة باستخدام Google
+    </button>
+
+    <div id="authMessage" role="status" aria-live="polite" style="margin-top:15px;overflow-wrap:anywhere"></div>
+    <button id="logoutBtn" type="button" class="btn btn-outline" style="display:none;width:100%;margin-top:12px">تسجيل الخروج</button>
+  </div>
+</div>
     footer {
       padding: 28px 0;
       border-top: 1px solid var(--border);
@@ -400,7 +444,10 @@
       <a href="#about">عن سوقي</a>
     </nav>
 
-    <button class="btn btn-primary" id="addTop">＋ أضف إعلانك</button>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+  <button class="btn btn-outline" id="loginTop">دخول / حساب جديد</button>
+  <button class="btn btn-primary" id="addTop">＋ أضف إعلانك</button>
+</div>
   </div>
 </header>
 
@@ -633,97 +680,284 @@
   </div>
 </footer>
 
-<script>
-  const cards = [...document.querySelectorAll(".listing")];
-  const searchInput = document.getElementById("searchInput");
-  const cityFilter = document.getElementById("cityFilter");
-  const emptyState = document.getElementById("emptyState");
-  let activeCategory = "all";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
-  function filterListings() {
-    const term = searchInput.value.trim().toLowerCase();
-    const city = cityFilter.value;
-    let visible = 0;
+const firebaseConfig = {
+  apiKey: "AIzaSyD62eZtdXtGXIM0Eo0XWRcu8FRmRSw8X8g",
+  authDomain: "souqe-8ccb8.firebaseapp.com",
+  projectId: "souqe-8ccb8",
+  storageBucket: "souqe-8ccb8.firebasestorage.app",
+  messagingSenderId: "602119740316",
+  appId: "1:602119740316:web:a534077bca7ad5564f0659",
+  measurementId: "G-Q8VGVJ39H3"
+};
 
-    cards.forEach(card => {
-      const matchesTerm =
-        (card.dataset.search + " " + card.innerText).toLowerCase().includes(term);
-      const matchesCity = !city || card.dataset.city === city;
-      const category = card.dataset.category;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
-      let matchesCategory = activeCategory === "all";
+const cards = [...document.querySelectorAll(".listing")];
+const searchInput = document.getElementById("searchInput");
+const cityFilter = document.getElementById("cityFilter");
+const emptyState = document.getElementById("emptyState");
 
-      if (activeCategory === "products") {
-        matchesCategory = category === "products";
-      } else if (activeCategory === "products-clothes" ||
-                 activeCategory === "products-home") {
-        matchesCategory = category === activeCategory;
-      } else if (activeCategory === "services") {
-        matchesCategory = category === "services";
-      } else if (activeCategory === "other") {
-        matchesCategory = category === "other";
-      }
+let activeCategory = "all";
+let mode = "login";
 
-      const show = matchesTerm && matchesCity && matchesCategory;
-      card.style.display = show ? "" : "none";
-      if (show) visible++;
-    });
+const modal = document.getElementById("authModal");
+const authForm = document.getElementById("authForm");
+const authTitle = document.getElementById("authTitle");
+const nameWrap = document.getElementById("nameWrap");
+const nameInput = document.getElementById("authName");
+const emailInput = document.getElementById("authEmail");
+const passwordInput = document.getElementById("authPassword");
+const submitAuth = document.getElementById("submitAuth");
+const authMessage = document.getElementById("authMessage");
+const forgotPassword = document.getElementById("forgotPassword");
+const googleLogin = document.getElementById("googleLogin");
+const logoutBtn = document.getElementById("logoutBtn");
 
-    emptyState.style.display = visible ? "none" : "block";
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function message(text, success = false) {
+  authMessage.textContent = text;
+  authMessage.style.color = success ? "#9be7b0" : "#ffabb8";
+}
+
+function openAuth(nextMode = "login") {
+  modal.style.display = "block";
+  setMode(nextMode);
+}
+
+function closeAuth() {
+  modal.style.display = "none";
+  authMessage.textContent = "";
+}
+
+function setMode(nextMode) {
+  mode = nextMode;
+  authMessage.textContent = "";
+
+  const signup = mode === "signup";
+  const reset = mode === "reset";
+
+  authTitle.textContent = reset
+    ? "استعادة كلمة المرور"
+    : signup ? "إنشاء حساب جديد" : "تسجيل الدخول";
+
+  nameWrap.style.display = signup ? "block" : "none";
+  nameInput.required = signup;
+  passwordInput.required = !reset;
+  passwordInput.style.display = reset ? "none" : "block";
+  document.getElementById("passwordWrap").style.display = reset ? "none" : "block";
+  document.getElementById("authTabs").style.display = reset ? "none" : "flex";
+  googleLogin.style.display = reset ? "none" : "block";
+  forgotPassword.style.display = reset ? "none" : "block";
+
+  submitAuth.textContent = reset
+    ? "إرسال رابط الاستعادة"
+    : signup ? "إنشاء الحساب" : "تسجيل الدخول";
+
+  document.getElementById("loginTab").className =
+    "btn " + (!signup && !reset ? "btn-primary" : "btn-outline");
+  document.getElementById("signupTab").className =
+    "btn " + (signup ? "btn-primary" : "btn-outline");
+}
+
+document.getElementById("loginTop").addEventListener("click", () => openAuth());
+document.getElementById("closeAuth").addEventListener("click", closeAuth);
+document.getElementById("loginTab").addEventListener("click", () => setMode("login"));
+document.getElementById("signupTab").addEventListener("click", () => setMode("signup"));
+forgotPassword.addEventListener("click", () => setMode("reset"));
+
+modal.addEventListener("click", event => {
+  if (event.target === modal) closeAuth();
+});
+
+function friendlyError(error) {
+  const errors = {
+    "auth/email-already-in-use": "البريد الإلكتروني مسجل مسبقاً. جرّب تسجيل الدخول.",
+    "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
+    "auth/weak-password": "كلمة المرور ضعيفة؛ استخدم 6 أحرف على الأقل.",
+    "auth/invalid-credential": "البريد أو كلمة المرور غير صحيحة.",
+    "auth/user-not-found": "ما لقينا حساباً بهذا البريد.",
+    "auth/wrong-password": "كلمة المرور غير صحيحة.",
+    "auth/popup-closed-by-user": "أغلقت نافذة Google قبل إكمال الدخول.",
+    "auth/popup-blocked": "المتصفح منع نافذة Google. اسمح بالنوافذ المنبثقة ثم حاول.",
+    "auth/unauthorized-domain": "عنوان الموقع غير مضاف إلى Authorized domains في Firebase.",
+    "auth/too-many-requests": "محاولات كثيرة. انتظر قليلاً ثم حاول مجدداً.",
+    "auth/network-request-failed": "تحقق من اتصال الإنترنت وحاول مجدداً."
+  };
+  return errors[error.code] || "تعذر إكمال العملية. تحقق من إعدادات Firebase والإنترنت.";
+}
+
+authForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  submitAuth.disabled = true;
+  message("جارٍ تنفيذ الطلب...");
+
+  try {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (mode === "reset") {
+      await sendPasswordResetEmail(auth, email);
+      message("إذا كان البريد مسجلاً، فسيصلك رابط استعادة كلمة المرور. تحقق من صندوق البريد والرسائل غير المرغوب فيها.", true);
+    } else if (mode === "signup") {
+      const name = nameInput.value.trim();
+      if (!name) throw new Error("اكتب اسمك أولاً.");
+
+      const credential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(credential.user, { displayName: name });
+
+      message("تم إنشاء الحساب بنجاح.", true);
+      setTimeout(closeAuth, 1000);
+    } else {
+      await signInWithEmailAndPassword(auth, email, password);
+      message("تم تسجيل الدخول بنجاح.", true);
+      setTimeout(closeAuth, 700);
+    }
+  } catch (error) {
+    message(error.message && !error.code ? error.message : friendlyError(error));
+  } finally {
+    submitAuth.disabled = false;
   }
+});
 
-  document.querySelectorAll(".category").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".category").forEach(item =>
-        item.classList.remove("active")
-      );
-      button.classList.add("active");
-      activeCategory = button.dataset.category;
-      filterListings();
-      document.getElementById("listings").scrollIntoView({ behavior: "smooth" });
-    });
+googleLogin.addEventListener("click", async () => {
+  googleLogin.disabled = true;
+  message("جارٍ فتح Google...");
+
+  try {
+    await signInWithPopup(auth, googleProvider);
+    message("تم تسجيل الدخول باستخدام Google.", true);
+    setTimeout(closeAuth, 700);
+  } catch (error) {
+    message(friendlyError(error));
+  } finally {
+    googleLogin.disabled = false;
+  }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    message("تم تسجيل الخروج.", true);
+  } catch (error) {
+    message(friendlyError(error));
+  }
+});
+
+onAuthStateChanged(auth, user => {
+  logoutBtn.style.display = user ? "block" : "none";
+  document.getElementById("loginTop").textContent = user
+    ? "حسابي: " + (user.displayName || user.email)
+    : "دخول / حساب جديد";
+});
+
+function filterListings() {
+  const term = searchInput.value.trim().toLowerCase();
+  const city = cityFilter.value;
+  let visible = 0;
+
+  cards.forEach(card => {
+    const matchesTerm = (card.dataset.search + " " + card.innerText)
+      .toLowerCase().includes(term);
+    const matchesCity = !city || card.dataset.city === city;
+    const category = card.dataset.category;
+
+    let matchesCategory = activeCategory === "all";
+
+    if (activeCategory === "products") {
+      matchesCategory = category === "products";
+    } else if (
+      activeCategory === "products-clothes" ||
+      activeCategory === "products-home"
+    ) {
+      matchesCategory = category === activeCategory;
+    } else if (activeCategory === "services") {
+      matchesCategory = category === "services";
+    } else if (activeCategory === "other") {
+      matchesCategory = category === "other";
+    }
+
+    const show = matchesTerm && matchesCity && matchesCategory;
+    card.style.display = show ? "" : "none";
+    if (show) visible++;
   });
 
-  document.getElementById("searchForm").addEventListener("submit", event => {
-    event.preventDefault();
+  emptyState.style.display = visible ? "none" : "block";
+}
+
+document.querySelectorAll(".category").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".category").forEach(item =>
+      item.classList.remove("active")
+    );
+    button.classList.add("active");
+    activeCategory = button.dataset.category;
     filterListings();
     document.getElementById("listings").scrollIntoView({ behavior: "smooth" });
   });
+});
 
-  searchInput.addEventListener("input", filterListings);
-  cityFilter.addEventListener("change", filterListings);
+document.getElementById("searchForm").addEventListener("submit", event => {
+  event.preventDefault();
+  filterListings();
+  document.getElementById("listings").scrollIntoView({ behavior: "smooth" });
+});
 
-  document.getElementById("clearFilters").addEventListener("click", () => {
-    searchInput.value = "";
-    cityFilter.value = "";
-    activeCategory = "all";
-    document.querySelectorAll(".category").forEach(item =>
-      item.classList.toggle("active", item.dataset.category === "all")
-    );
-    filterListings();
-  });
+searchInput.addEventListener("input", filterListings);
+cityFilter.addEventListener("change", filterListings);
 
-  function addListingNotice() {
-    alert("إضافة الإعلانات الحقيقية ستتوفر بعد ربط تسجيل الدخول وقاعدة البيانات في الخطوة التالية.");
+document.getElementById("clearFilters").addEventListener("click", () => {
+  searchInput.value = "";
+  cityFilter.value = "";
+  activeCategory = "all";
+  document.querySelectorAll(".category").forEach(item =>
+    item.classList.toggle("active", item.dataset.category === "all")
+  );
+  filterListings();
+});
+
+async function addListingNotice() {
+  if (!auth.currentUser) {
+    openAuth("login");
+    message("سجّل الدخول أولاً. نشر الإعلانات الحقيقية يحتاج ربط قاعدة البيانات.");
+    return;
   }
 
-  ["addTop", "addHero", "addBottom"].forEach(id => {
-    document.getElementById(id).addEventListener("click", addListingNotice);
-  });
+  alert("تم تسجيل دخولك. نشر الإعلانات سيُفعّل بعد ربط نموذج الإعلان بقاعدة بيانات Firestore.");
+}
 
-  document.querySelectorAll(".demo-contact").forEach(button => {
-    button.addEventListener("click", () => {
-      alert("هذا إعلان تجريبي، ولا يوجد معلن حقيقي للتواصل معه حتى الآن.");
-    });
-  });
+["addTop", "addHero", "addBottom"].forEach(id => {
+  document.getElementById(id).addEventListener("click", addListingNotice);
+});
 
-  // يُضاف رابط واتساب بعد تأكيد الرقم بصيغته الدولية.
-  document.getElementById("whatsappLink").addEventListener("click", event => {
-    event.preventDefault();
-    alert("سيتم تفعيل واتساب الإدارة بعد تأكيد مفتاح الدولة للرقم.");
+document.querySelectorAll(".demo-contact").forEach(button => {
+  button.addEventListener("click", () => {
+    alert("هذا إعلان تجريبي، ولا يوجد معلن حقيقي للتواصل معه حتى الآن.");
   });
+});
 
-  document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("whatsappLink").addEventListener("click", event => {
+  event.preventDefault();
+  alert("سيتم تفعيل واتساب الإدارة بعد إضافة رقم التواصل.");
+});
 </script>
+</body>
+</html>
 </body>
 </html>
